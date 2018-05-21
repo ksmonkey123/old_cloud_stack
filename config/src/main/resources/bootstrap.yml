@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: jdbc
+  datasource:
+    url: jdbc:mysql://lantia.awae.ch:3306/cloud_config
+    username: cloud-config
+    password: Pass1234Cloud7890
+    driver-class-name: com.mysql.jdbc.Driver
+  cloud:
+    config:
+      server:
+        jdbc:
+          sql: "SELECT `KEY`, VALUE from PROPERTIES where APPLICATION=? and PROFILE=? and LABEL=?"

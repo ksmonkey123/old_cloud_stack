@@ -1,0 +1,24 @@
+version: '2.1'
+services:
+
+  config:
+    container_name: config-server
+    build: config
+    image: ch.awae/config
+    restart: always
+
+  registry:
+    container_name: registry-server
+    build: registry
+    image: ch.awae/registry
+    restart: always
+    ports:
+      - 8761:8761
+
+  gateway:
+    container_name: gateway-server
+    build: gateway
+    ports:
+      - 4000:4000
+    image: ch.awae/gateway
+    restart: always
