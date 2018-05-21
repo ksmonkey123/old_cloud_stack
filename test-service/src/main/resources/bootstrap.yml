@@ -1,6 +1,6 @@
 spring:
   application:
-    name: gateway
+    name: test-service
   cloud:
     config:
       uri: http://config:8888
