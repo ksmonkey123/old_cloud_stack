@@ -22,3 +22,10 @@ services:
       - 4000:4000
     image: ch.awae/gateway
     restart: always
+
+  test-service:
+    container_name: test-service
+    build: test-service
+    image: ch.awae/test-service
+    restart: always
+    
