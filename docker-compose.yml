@@ -23,6 +23,12 @@ services:
     image: ch.awae/gateway
     restart: always
 
+  auth-service:
+    container_name: auth-service
+    build: auth-service
+    image: ch.awae/auth-service
+    restart: always
+
   test-service:
     container_name: test-service
     build: test-service
