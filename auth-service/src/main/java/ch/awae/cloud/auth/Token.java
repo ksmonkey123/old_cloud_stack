@@ -1,13 +1,19 @@
 package ch.awae.cloud.auth;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Optional;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,20 +28,30 @@ public class Token {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 
-	private Timestamp cre_dat;
+	@Column(name = "cre_dat")
+	private Timestamp creation;
 
-	private Timestamp exp_dat;
+	@Column(name = "exp_dat")
+	private Timestamp expires;
 
 	private String token;
 
 	public Token(User user, Timestamp cre_dat, Timestamp exp_dat, String token) {
 		this.user = user;
-		this.cre_dat = cre_dat;
-		this.exp_dat = exp_dat;
+		this.creation = cre_dat;
+		this.expires = exp_dat;
 		this.token = token;
 	}
+
+}
+
+interface TokenRepo extends JpaRepository<Token, Long> {
+
+	List<Token> findByExpiresLessThan(Timestamp time);
+
+	Optional<Token> findByToken(String token);
 
 }
