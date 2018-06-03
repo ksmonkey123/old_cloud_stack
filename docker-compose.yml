@@ -37,7 +37,7 @@ services:
     
   shorten-service:
     container_name: shorten-service
-    build: test-service
+    build: shorten-service
     image: ch.awae/shorten-service
     restart: always
     
