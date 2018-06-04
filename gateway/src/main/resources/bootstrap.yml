@@ -5,3 +5,10 @@ spring:
     config:
       uri: http://config:8888
       fail-fast: true
+      
+zuul:
+  routes:
+    shorten_resolve:
+      path: /s/**
+      service-id: shorten-service
+      strip-prefix: false
