@@ -44,7 +44,7 @@ public class AuthController {
 		return token.generateTokenPair(user);
 	}
 
-	@PostMapping("/logout")
+	@PostMapping("/doLogout")
 	public void logout(@RequestHeader("Authorization") String refreshToken) {
 		token.remove(refreshToken);
 	}
