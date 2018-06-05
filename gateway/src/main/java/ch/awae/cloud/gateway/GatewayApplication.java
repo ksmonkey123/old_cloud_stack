@@ -18,6 +18,6 @@ public class GatewayApplication {
 
 	@Bean
 	public PatternServiceRouteMapper serviceRouteMapper() {
-		return new PatternServiceRouteMapper("(?<name>^.+)-service", "${name}");
+		return new PatternServiceRouteMapper("(?<name>^.+)-service", "api/${name}");
 	}
 }
