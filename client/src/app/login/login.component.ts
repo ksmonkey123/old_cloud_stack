@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if (this.auth.hasToken()) {
       console.log('redirecting');
-      this.router.navigate(['home'])
+      this.router.navigate(['/'])
     }
   }
 
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.model.username, this.model.password)
       .subscribe(
         result => {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/']);
         },
         error => {
           this.problem = true;

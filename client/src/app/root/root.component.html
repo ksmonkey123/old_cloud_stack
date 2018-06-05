@@ -1,0 +1,28 @@
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">MyAwae</a>
+  <button class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+    aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+    aria-controls="navbarTogglerDemo02">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo02" [ngbCollapse]="isCollapsed">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li *ngFor="let item of links" class="nav-item">
+        <a class="nav-link" [routerLink]="item.route">{{item.text}}</a>
+      </li>
+    </ul>
+    <div ngbDropdown class="d-inline-block" placement="bottom-right">
+      <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{username}}</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <button class="dropdown-item" (click)="openSettings()">Settings</button>
+        <button class="dropdown-item" (click)="doLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<div class="mt-5 p-4">
+  <router-outlet></router-outlet>
+</div>

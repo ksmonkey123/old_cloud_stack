@@ -14,12 +14,19 @@ import { TokenInterceptor } from './auth/token.interceptor';
 import { ContentTypeInterceptor } from './shared/contenttype.interceptor';
 import { AuthGuard } from './auth/auth.guard';
 import { UserService } from './shared/user.service';
+import { UserComponent } from './user/user.component';
+import { RootComponent } from './root/root.component';
+import { ShortenComponent } from './shorten/shorten.component';
+import { ShortenService } from './shorten/shorten.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    UserComponent,
+    RootComponent,
+    ShortenComponent
   ],
   imports: [
     BrowserModule,
@@ -31,6 +38,7 @@ import { UserService } from './shared/user.service';
   providers: [
     AuthService,
     UserService,
+    ShortenService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,

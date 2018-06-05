@@ -24,10 +24,4 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  doLogout() {
-    this.authService.fullLogout(() =>
-      this.router.navigate(['/login'])
-    );
-  }
-
 }

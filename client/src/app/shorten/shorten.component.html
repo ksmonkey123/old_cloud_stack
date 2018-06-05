@@ -1,0 +1,12 @@
+<h1>Shortener</h1>
+
+<table>
+  <tr>
+    <th>identifier</th>
+    <th>target</th>
+  </tr>
+  <tr *ngFor="let link of links">
+    <td><a href="http://my.awae.ch/s/{{link.identifier}}">my.awae.ch/s/{{link.identifier}}</a></td>
+    <td><a href="{{link.target}}">{{link.target}}</a></td>
+  </tr>
+</table>
