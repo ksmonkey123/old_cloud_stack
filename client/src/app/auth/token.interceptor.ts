@@ -49,7 +49,7 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // only handle api requests here, auth requests are more complicated and must therefore be handled externally
 
-    if (request.url === '/auth/refresh' || request.url === '/auth/doLogout') {
+    if (request.url === '/api/auth/refresh' || request.url === '/api/auth/doLogout') {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${this.auth.getRefreshToken()}`
@@ -57,7 +57,7 @@ export class TokenInterceptor implements HttpInterceptor {
       });
       return next.handle(request);
     } else {
-      if (request.url !== '/auth/login') {
+      if (request.url !== '/api/auth/login') {
         request = request.clone({
           setHeaders: {
             Authorization: `Bearer ${this.auth.getToken()}`

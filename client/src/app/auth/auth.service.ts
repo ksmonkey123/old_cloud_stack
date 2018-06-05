@@ -16,9 +16,8 @@ export class AuthService {
   hasToken(): boolean {
     return localStorage.getItem(TOKEN_NAME) !== null;
   }
-  private url: string = '/auth/login';
-  //private options = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
-
+  private url: string = '/api/auth/login';
+  
   constructor(private http: HttpClient) { }
 
   getToken(): string {
@@ -62,7 +61,7 @@ export class AuthService {
   }
 
   refreshTokens() {
-    return this.http.post('/auth/refresh', null).
+    return this.http.post('/api/auth/refresh', null).
       pipe(map((response: any) => {
         // login successful if there's a jwt token in the response
         let accessToken = response.accessToken;
@@ -82,7 +81,7 @@ export class AuthService {
   }
 
   fullLogout(callback: () => void) {
-    this.http.post('/auth/doLogout', null).subscribe(
+    this.http.post('/api/auth/doLogout', null).subscribe(
       x => {
         this.logout();
         callback();
