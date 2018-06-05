@@ -1,0 +1,15 @@
+<div class="outer">
+  <div class="middle">
+    <div class="inner">
+      <ngb-alert *ngIf="problem" type="danger" (close)="closeAlert()">Bad Credentials!</ngb-alert>
+      <form class="form-signin text-center" #f="ngForm" (ngSubmit)="onSubmitClicked()">
+        <h1 class="h3 mb-5 font-weight-normal">Please sign in</h1>
+        <label for="username" class="sr-only">Email address</label>
+        <input type="text" id="username" class="form-control" placeholder="username" required="" autofocus="" [(ngModel)]="model.username" name="username">
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" id="password" class="form-control mb-5" placeholder="password" name="password" [(ngModel)]="model.password" required="">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
