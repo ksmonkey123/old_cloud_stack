@@ -1,8 +1,12 @@
 package ch.awae.cloud.test;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.http.HttpRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import ch.awae.cloud.security.Security;
 
@@ -24,8 +28,9 @@ public class Test {
 	}
 	
 	@GetMapping("/public")
-	public String test2() {
-		return "Hello World";
+	public String test2(HttpServletRequest request) {
+		return request.getRemoteHost();
+		//return "Hello World";
 	}
 
 }
