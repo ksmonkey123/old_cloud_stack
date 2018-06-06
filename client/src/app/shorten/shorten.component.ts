@@ -38,6 +38,10 @@ export class ShortenComponent implements OnInit {
   }
 
   addLink() {
+    if (!(this.addURL.startsWith("http://") || this.addURL.startsWith("https://"))) {
+      this.addURL = `http://${this.addURL}`;
+    }
+
     this.shortenService.addLink(this.addURL).subscribe(
       link => {
         this.links.unshift(link);
