@@ -69,5 +69,7 @@ interface EntryRepo extends JpaRepository<Entry, Long> {
 	List<Entry> findByUser(Long user);
 
 	Optional<Entry> findByIdentifier(String identifier);
+	
+	List<Entry> findByUserOrderByCreatedDesc(Long user);
 
 }

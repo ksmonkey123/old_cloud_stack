@@ -28,7 +28,7 @@ public class ShortenController {
 	@GetMapping("/list")
 	@Secured("ROLE_USER")
 	public List<Entry> getUserLinkList() {
-		return repo.findByUser(Security.getUserId());
+		return repo.findByUserOrderByCreatedDesc(Security.getUserId());
 	}
 
 	@PostMapping("/link")

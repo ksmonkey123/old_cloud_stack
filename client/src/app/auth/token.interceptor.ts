@@ -47,9 +47,8 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // only handle api requests here, auth requests are more complicated and must therefore be handled externally
-
     if (request.url === '/api/auth/refresh' || request.url === '/api/auth/doLogout') {
+      // auth/refresh and auth/doLogout are authenticated using the refresh token
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${this.auth.getRefreshToken()}`
@@ -58,6 +57,7 @@ export class TokenInterceptor implements HttpInterceptor {
       return next.handle(request);
     } else {
       if (request.url !== '/api/auth/login') {
+        // auth/login is unauthenticated, everything else uses access token
         request = request.clone({
           setHeaders: {
             Authorization: `Bearer ${this.auth.getToken()}`
@@ -79,7 +79,7 @@ export class TokenInterceptor implements HttpInterceptor {
                 }),
                 catchError(e2 => {
                   console.log('retry failed');
-                  if (error.status === 401) {
+                  if (e2.status === 401) {
                     this.logout();
                     return EMPTY;
                   } else {
@@ -90,6 +90,7 @@ export class TokenInterceptor implements HttpInterceptor {
           return throwError(error);
         }));
       } else {
+        // auth/login uses default behaviour
         return next.handle(request);
       }
     }

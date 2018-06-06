@@ -9,19 +9,42 @@ import { ShortenEntry } from './shortenEntry';
 })
 export class ShortenComponent implements OnInit {
 
-  constructor(private shortenService : ShortenService) { }
+  constructor(private shortenService: ShortenService) { }
 
-  links : ShortenEntry[] = [];
+  links: ShortenEntry[] = [];
+  addURL: string = null;
 
   ngOnInit() {
     this.shortenService.getList().subscribe(
-      (list : ShortenEntry[]) => {
+      (list: ShortenEntry[]) => {
         this.links = list;
       },
-      (error : Error) => {
+      (error: Error) => {
         console.log(error);
       }
     )
+  }
+
+  updateLink(link: ShortenEntry) {
+    this.shortenService.patchLink(link).subscribe(
+      x => {
+        console.log("patch done");
+      },
+      error => {
+        console.log("patch failed");
+        console.log(error);
+      }
+    )
+  }
+
+  addLink() {
+    this.shortenService.addLink(this.addURL).subscribe(
+      link => {
+        this.links.unshift(link);
+        this.addURL = null;
+      },
+      error => console.log(error)
+    );
   }
 
 }
