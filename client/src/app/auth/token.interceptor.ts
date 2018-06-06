@@ -77,9 +77,14 @@ export class TokenInterceptor implements HttpInterceptor {
                   });
                   return next.handle(request);
                 }),
-                catchError(() => {
-                  this.logout();
-                  return EMPTY;
+                catchError(e2 => {
+                  console.log('retry failed');
+                  if (error.status === 401) {
+                    this.logout();
+                    return EMPTY;
+                  } else {
+                    throw e2;
+                  }
                 }));
           }
           return throwError(error);
