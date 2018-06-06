@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { TokenInterceptor } from './auth/token.interceptor';
 import { ContentTypeInterceptor } from './shared/contenttype.interceptor';
 import { AuthGuard } from './auth/auth.guard';
-import { UserService } from './shared/user.service';
+import { UserService } from './user/user.service';
 import { UserComponent } from './user/user.component';
 import { RootComponent } from './root/root.component';
 import { ShortenComponent } from './shorten/shorten.component';

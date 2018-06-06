@@ -1,4 +1,4 @@
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href="#">MyAwae</a>
   <button class="navbar-toggler btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
     aria-expanded="false" aria-label="Toggle navigation" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
@@ -13,7 +13,7 @@
       </li>
     </ul>
     <div ngbDropdown class="d-inline-block" placement="bottom-right">
-      <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{username}}</button>
+      <button class="btn text-white btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>{{username}}</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
         <button class="dropdown-item" (click)="openSettings()">Settings</button>
         <button class="dropdown-item" (click)="doLogout()">Logout</button>
@@ -22,7 +22,11 @@
   </div>
 </nav>
 
-
-<div class="mt-5 p-4">
-  <router-outlet></router-outlet>
+<div class="mt-5 p-4 pt-5">
+  <p *ngFor="let alert of alerts">
+    <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{ alert.message }}</ngb-alert>
+  </p>
+  <div>
+    <router-outlet></router-outlet>
+  </div>
 </div>

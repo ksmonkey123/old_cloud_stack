@@ -1,3 +1,17 @@
-<p>
-  user works!
-</p>
+<h1>User Settings</h1>
+
+<div class="card mt-5">
+  <div class="card-header bg-primary text-white">
+    Change Password
+  </div>
+  <div class="card-body">
+    <form class="form-changePW" #f="ngForm" (ngSubmit)="changePassword()">
+      <input type="password" id="oldPW" class="form-control" placeholder="current password" name="password" [(ngModel)]="pwmodel.oldpassword"
+        required="">
+      <input type="password" id="newPW" class="form-control" placeholder="new password" name="password" [(ngModel)]="pwmodel.newpassword"
+        required="">
+      <br/>
+      <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+  </div>
+</div>
