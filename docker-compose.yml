@@ -30,9 +30,9 @@ services:
     restart: always
 
   test-service:
-    container_name: test-service
-    build: test-service
-    image: ch.awae/test-service
+    container_name: elite-service
+    build: elite-service
+    image: ch.awae/elite-service
     restart: always
     
   shorten-service:

@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ch.awae</groupId>
-	<artifactId>test-service</artifactId>
+	<artifactId>elite-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>test-service</name>
+	<name>elite-service</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -73,7 +73,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<finalName>test-service</finalName>
+					<finalName>elite-service</finalName>
 				</configuration>
 			</plugin>
 		</plugins>
