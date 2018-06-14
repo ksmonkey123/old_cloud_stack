@@ -15,7 +15,8 @@ export class RootComponent implements OnInit {
   isCollapsed = true;
 
   links = [
-    { text: "Shortener", route: "/shorten" }
+    { text: "Shortener", route: "/shorten" },
+    {text: "E:D Router", route: "/elite-route"}
   ]
 
   user: User;

@@ -18,6 +18,8 @@ import { UserComponent } from './user/user.component';
 import { RootComponent } from './root/root.component';
 import { ShortenComponent } from './shorten/shorten.component';
 import { ShortenService } from './shorten/shorten.service';
+import { EliteRouteComponent } from './elite-route/elite-route.component';
+import { EliteRouteService } from './elite-route/elite-route.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { ShortenService } from './shorten/shorten.service';
     HomeComponent,
     UserComponent,
     RootComponent,
-    ShortenComponent
+    ShortenComponent,
+    EliteRouteComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +42,7 @@ import { ShortenService } from './shorten/shorten.service';
     AuthService,
     UserService,
     ShortenService,
+    EliteRouteService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,

@@ -1,0 +1,30 @@
+<h1>E:D Route Finder</h1>
+
+<div class="routeform">
+  <form #f="ngForm" (ngSubmit)='findRoute()'>
+    <div class="form-group">
+      <input type="text" id="fromField" class="form-control" [(ngModel)]='from' name="from" placeholder="Origin">
+    </div>
+    <div class="form-group">
+      <input type="text" id="toField" class="form-control" [(ngModel)]='to' name="to" placeholder="Destination">
+    </div>
+    <div class="form-group">
+      <label for="rangeField">Max. Range</label>
+      <input type="number" class="form-control" id="rangeField" [(ngModel)]='range' name="range">
+    </div>
+    <button class="btn btn-primary mb-5" type="submit">Search</button>
+  </form>
+</div>
+
+<div *ngIf="result !== null" class="card routeform">
+  <div class="card-header">
+    <strong>{{result.origin}} &rarr; {{result.target}}</strong> ({{result.distance.toFixed(2)}}ly)
+    <br/> {{result.jumps}} jumps ({{result.routeLength.toFixed(2)}}ly total)
+  </div>
+  <ul class="list-group list-group-flush">
+    <li *ngFor="let step of result.steps" class="list-group-item">
+        <input type="checkbox"> &nbsp;&nbsp; {{step.name}}
+      <span class="badge badge-primary float-right badge-pill">{{step.distance.toFixed(2)}}ly</span>
+    </li>
+  </ul>
+</div>
