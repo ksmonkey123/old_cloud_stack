@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
