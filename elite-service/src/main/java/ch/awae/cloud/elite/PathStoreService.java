@@ -1,12 +1,17 @@
 package ch.awae.cloud.elite;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ch.awae.cloud.exception.ResourceNotFoundException;
@@ -19,6 +24,17 @@ public class PathStoreService {
 
 	private @Autowired PathStoreRepo pathRepo;
 	private @Autowired StarSystemRepo systemRepo;
+	private @Value("${cache.expiration}") long maxAge;
+
+	private static Logger logger = LoggerFactory.getLogger(PathStoreService.class);
+	
+	@Scheduled(cron = "${cache.evictionSchedule}")
+	public void evictCache() {
+		val ref = new Timestamp(System.currentTimeMillis() - maxAge);
+		val candidates = pathRepo.findAllByCreatedIsBefore(ref);
+		pathRepo.deleteAll(candidates);
+		logger.info("deleted " + candidates.size() + " cached paths");
+	}
 
 	public Optional<PathfindingResult> readFromStore(SystemEntry origin, SystemEntry target, double range) {
 		val start = System.currentTimeMillis();
@@ -46,8 +62,8 @@ public class PathStoreService {
 
 	public List<SystemEntry> getRoutes(String origin, double range) {
 		System.out.println("reading cached routes from " + origin);
-		return pathRepo.findByOriginAndJumpRange(origin, normalizeDistance(range, false)).stream().filter(s -> "NOPATH".equals(s.getPathString()))
-				.map(s -> {
+		return pathRepo.findByOriginAndJumpRange(origin, normalizeDistance(range, false)).stream()
+				.filter(s -> "NOPATH".equals(s.getPathString())).map(s -> {
 					val a = s.getPathString().split(",");
 					return Long.parseLong(a[a.length - 1]);
 				})
@@ -89,6 +105,7 @@ public class PathStoreService {
 	private double normalizeDistance(double distance, boolean write) {
 		return (write ? Math.ceil(distance * ROUNDING) : Math.floor(distance * ROUNDING)) / ROUNDING;
 	}
+
 }
 
 class NoPathException extends RuntimeException {

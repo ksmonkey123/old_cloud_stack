@@ -58,7 +58,7 @@ interface PathStoreRepo extends JpaRepository<PathStore, Long> {
 
 	Optional<PathStore> findByOriginAndTargetAndJumpRange(String origin, String target, double range);
 
-	List<PathStore> findByCreatedIsBefore(Timestamp time);
+	List<PathStore> findAllByCreatedIsBefore(Timestamp time);
 	
 	List<PathStore> findByOriginAndJumpRange(String origin, double range);
 
