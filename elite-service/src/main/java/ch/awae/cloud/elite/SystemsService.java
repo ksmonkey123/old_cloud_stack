@@ -46,9 +46,6 @@ public class SystemsService {
 		val result = repo.searchCube(x, y, z, distance).parallelStream().map(SystemEntry::new)
 				.filter(sys -> !sys.equals(entry))
 				.filter(sys -> sys.getCoords().distance(entry.getCoords()) <= distance).collect(Collectors.toList());
-
-		System.out.println(
-				"found " + result.size() + " system in the neighbourhood (" + distance + "ly) of " + entry.getName());
 		return result;
 	}
 

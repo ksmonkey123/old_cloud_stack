@@ -42,6 +42,7 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   logout() {
+    console.log("logout");
     this.auth.logout();
     this.router.navigate(['login']);
   }

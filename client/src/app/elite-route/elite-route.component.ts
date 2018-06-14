@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import { EliteRouteService, RouteData } from './elite-route.service';
+import { RootComponent } from '../root/root.component';
 
 @Component({
   selector: 'app-elite-route',
@@ -12,18 +13,36 @@ export class EliteRouteComponent implements OnInit {
   to: string;
   range: number = 10;
   result: RouteData | null = null;
+  working: boolean = false;
+  error: boolean = false;
+  cached: boolean = false;
 
-  constructor(private routeService: EliteRouteService) { }
+  constructor(private routeService: EliteRouteService, private root: RootComponent, private ref: ChangeDetectorRef) { }
 
   ngOnInit() {
   }
 
+  ngOnDestroy() {
+    this.root.closeAlerts(this);
+  }
+
   findRoute() {
+    this.result = null;
+    this.error = false;
+    this.working = true;
     this.routeService.findPath(this.from, this.to, this.range).subscribe(
        (route: RouteData) => {
-         this.result = route;
+          this.working = false;
+          this.root.closeAlerts(this);
+          this.result = route;
+          this.cached = route.cached;
+          this.ref.detectChanges();
         },
-        error => console.log(error)
+        error => {
+          this.error = true;
+          this.working = false;
+          this.root.addErrorAlert(error, this);
+        }
       );
   }
 

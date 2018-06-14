@@ -1,12 +1,13 @@
 package ch.awae.cloud.elite;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ch.awae.cloud.exception.BadRequestException;
+import ch.awae.cloud.exception.ResourceNotFoundException;
 import ch.awae.utils.pathfinding.AStarPathfinder;
 import ch.awae.utils.pathfinding.GraphDataProvider;
 import ch.awae.utils.pathfinding.Pathfinder;
@@ -17,20 +18,38 @@ import lombok.val;
 @Service
 public class PathfindingService {
 
-	@Autowired
-	private SystemsService service;
+	private @Autowired SystemsService systemService;
+	private @Autowired PathStoreService storeService;
 
 	public PathfindingResult findPath(String from, String to, double maxJump) {
 		long start = System.currentTimeMillis();
-		Pathfinder<SystemEntry> pathfinder = new AStarPathfinder<>(new Skywalker(maxJump));
 
-		SystemEntry origin = service.getByName(from);
-		SystemEntry target = service.getByName(to);
+		SystemEntry origin = systemService.getByName(from);
+		SystemEntry target = systemService.getByName(to);
+
+		try {
+			return storeService.readFromStore(origin, target, maxJump)
+					.orElseGet(() -> doPathfinding(maxJump, start, origin, target));
+		} catch (NoPathException npe) {
+			throw new ResourceNotFoundException("route", "path", origin.getName() + " \u2192 " + target.getName());
+		}
+	}
+
+	private PathfindingResult doPathfinding(double maxJump, long start, SystemEntry origin, SystemEntry target) {
+		Pathfinder<SystemEntry> pathfinder = new AStarPathfinder<>(new Skywalker(maxJump));
+		pathfinder.setTimeout(300000);
 
 		val result = pathfinder.findPath(origin, target);
-		if (result == null)
-			throw new BadRequestException("could not find route from " + origin.getName() + " to " + target.getName());
-
+		if (result == null) {
+			try {
+				storeService.storeNil(origin.getName(), target.getName(), maxJump);
+				storeService.storeNil(target.getName(), origin.getName(), maxJump);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			System.out.println("no path found");
+			throw new ResourceNotFoundException("route", "path", origin.getName() + " \u2192 " + target.getName());
+		}
 		System.out.println("found a route with " + result.size() + " jumps");
 
 		val sorted = new ArrayList<SystemEntry>();
@@ -49,11 +68,20 @@ public class PathfindingService {
 			steps.add(new TravelStep(b.getName(), dist));
 		}
 
+		try {
+			storeService.store(sorted, travelDistance, maxJump);
+			val copy = new ArrayList<>(sorted);
+			Collections.reverse(copy);
+			storeService.store(copy, travelDistance, maxJump);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		long time = System.currentTimeMillis() - start;
 
 		return new PathfindingResult(origin.getName(), target.getName(),
 				target.getCoords().distance(origin.getCoords()), travelDistance, maxJump, result.size(),
-				-Math.floorDiv(-time, 1000), steps);
+				-Math.floorDiv(-time, 1000), steps, false);
 	}
 
 	@AllArgsConstructor
@@ -62,7 +90,10 @@ public class PathfindingService {
 
 		@Override
 		public Iterable<SystemEntry> getNeighbours(SystemEntry vertex) {
-			return service.getNeighbours(vertex, maxJump);
+			val list = systemService.getNeighbours(vertex, maxJump);
+			// TODO: add known sub-paths from cache
+			//storeService.getRoutes(vertex.getName(), maxJump);
+			return list;
 		}
 
 		@Override
@@ -82,6 +113,7 @@ class PathfindingResult {
 	int jumps;
 	long searchTime;
 	List<TravelStep> steps;
+	boolean cached;
 }
 
 @Getter

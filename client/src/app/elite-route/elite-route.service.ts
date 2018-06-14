@@ -30,7 +30,8 @@ export interface RouteData {
    maxJumpRange: number,
    jumps: number,
    searchTime : number,
-   steps: RouteStep[];
+   steps: RouteStep[],
+   cached: boolean;
 }
 
 export interface RouteStep {

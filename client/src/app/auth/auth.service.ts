@@ -5,7 +5,8 @@ import { Injectable } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule, Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 export const TOKEN_NAME: string = 'jwt_token';
 export const REFRESH_TOKEN_NAME: string = 'refresh_token';
@@ -18,7 +19,7 @@ export class AuthService {
   }
   private url: string = '/api/auth/login';
   
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   getToken(): string {
     return localStorage.getItem(TOKEN_NAME);
@@ -77,7 +78,8 @@ export class AuthService {
         }));
         // return true to indicate successful login
         return true;
-      }));
+      }),
+    catchError(e => this.router.navigate(['login'])));
   }
 
   fullLogout(callback: () => void) {

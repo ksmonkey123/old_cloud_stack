@@ -12,19 +12,32 @@
       <label for="rangeField">Max. Range</label>
       <input type="number" class="form-control" id="rangeField" [(ngModel)]='range' name="range">
     </div>
-    <button class="btn btn-primary mb-5" type="submit">Search</button>
+    <button class="btn btn-primary" type="submit" [disabled]='working'>Search</button>
   </form>
 </div>
 
-<div *ngIf="result !== null" class="card routeform">
+<div *ngIf="working" class="routeform">
+  <div class="progress mt-3">
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+  </div>
+</div>
+
+<div *ngIf="result !== null" class="card routeform mt-5">
   <div class="card-header">
-    <strong>{{result.origin}} &rarr; {{result.target}}</strong> ({{result.distance.toFixed(2)}}ly)
-    <br/> {{result.jumps}} jumps ({{result.routeLength.toFixed(2)}}ly total)
+    <strong>{{result.origin}} &rarr; {{result.target}}</strong> ({{result.distance.toFixed(2)}} ly)
+    <span *ngIf="cached" class="badge badge-secondary float-right badge-pill">cached</span>
+    <br/> {{result.jumps}} jumps (max {{result.maxJumpRange.toFixed(2)}} ly) - {{result.routeLength.toFixed(2)}} ly total - {{result.searchTime}}s
   </div>
   <ul class="list-group list-group-flush">
     <li *ngFor="let step of result.steps" class="list-group-item">
-        <input type="checkbox"> &nbsp;&nbsp; {{step.name}}
-      <span class="badge badge-primary float-right badge-pill">{{step.distance.toFixed(2)}}ly</span>
+      <input type="checkbox"> &nbsp;&nbsp; {{step.name}}
+      <span class="badge badge-primary float-right badge-pill">{{step.distance.toFixed(2)}} ly</span>
     </li>
   </ul>
+</div>
+
+<div *ngIf="error" class="routeform mt-5">
+  Note: After 1 minute the request will time-out.
+  The internal pathfinder continues on for up to 5 minutes.
+  If the request timed out, wait a few minutes and try again to see if a path has been found in the mean time.
 </div>
