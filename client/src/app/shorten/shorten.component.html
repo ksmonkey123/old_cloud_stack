@@ -24,7 +24,7 @@
   <tbody *ngIf="links.length > 0; else emptyTable">
     <tr *ngFor="let link of links">
       <td class="text-center">
-        <input [(ngModel)]='link.active' type="checkbox" (click)='updateLink(link)'>
+        <input [ngModel]='link.active' type="checkbox" (click)='updateLink(link)'>
       </td>
       <td *ngIf="link.active; then linkBlock; else elseBlock"></td>
       <ng-template #linkBlock>

@@ -15,6 +15,7 @@
 		<module>auth-service</module>
 		<module>elite-service</module>
 		<module>shorten-service</module>
+		<module>netcode-service</module>
 	</modules>
 
 </project>

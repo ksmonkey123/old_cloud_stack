@@ -26,6 +26,7 @@ export class ShortenComponent implements OnInit {
   }
 
   updateLink(link: ShortenEntry) {
+    link.active = !link.active;
     this.shortenService.patchLink(link).subscribe(
       x => {
         console.log("patch done");

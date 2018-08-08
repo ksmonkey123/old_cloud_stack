@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ch.awae.cloud.exception.ResourceNotFoundException;
+import ch.awae.utils.functional.Function1;
+import ch.awae.utils.functional.Function2;
 import ch.awae.utils.pathfinding.AStarPathfinder;
 import ch.awae.utils.pathfinding.GraphDataProvider;
 import ch.awae.utils.pathfinding.Pathfinder;
@@ -36,7 +38,7 @@ public class PathfindingService {
 	}
 
 	private PathfindingResult doPathfinding(double maxJump, long start, SystemEntry origin, SystemEntry target) {
-		Pathfinder<SystemEntry> pathfinder = new AStarPathfinder<>(new Skywalker(maxJump));
+		Pathfinder<SystemEntry> pathfinder = new AStarPathfinder<>(new Skywalker(Heuristic.SHORTEST_PATH, maxJump));
 		pathfinder.setTimeout(300000);
 
 		val result = pathfinder.findPath(origin, target);
@@ -84,25 +86,36 @@ public class PathfindingService {
 				-Math.floorDiv(-time, 1000), steps, false);
 	}
 
-	@AllArgsConstructor
 	private class Skywalker implements GraphDataProvider<SystemEntry> {
 		private double maxJump;
+		private Function2<SystemEntry, SystemEntry, Double> heuristic;
+
+		public Skywalker(Heuristic heuristic, double maxJump) {
+			this.maxJump = maxJump;
+			this.heuristic = heuristic.heuristic.apply(maxJump);
+		}
 
 		@Override
 		public Iterable<SystemEntry> getNeighbours(SystemEntry vertex) {
 			val list = systemService.getNeighbours(vertex, maxJump);
-			// TODO: add known sub-paths from cache
-			//storeService.getRoutes(vertex.getName(), maxJump);
 			return list;
 		}
 
 		@Override
 		public double getDistance(SystemEntry from, SystemEntry to) {
-			return from.getCoords().distance(to.getCoords());
+			return heuristic.apply(from, to);
 		}
 
 	}
 
+}
+
+@AllArgsConstructor
+enum Heuristic {
+	SHORTEST_PATH(dist -> (a, b) -> a.distanceTo(b)), // "Most Efficient Route"
+	LEAST_JUMPS(dist -> (a, b) -> Math.max(1, a.distanceTo(b) / dist)); // "Fastest Route"
+
+	final Function1<Double, Function2<SystemEntry, SystemEntry, Double>> heuristic;
 }
 
 @Getter

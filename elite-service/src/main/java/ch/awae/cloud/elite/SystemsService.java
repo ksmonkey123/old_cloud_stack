@@ -67,6 +67,10 @@ class SystemEntry {
 		name = system.getName();
 		coords = new SystemCoordinates(system.getX(), system.getY(), system.getZ());
 	}
+
+	public double distanceTo(SystemEntry other) {
+		return this.coords.distance(other.coords);
+	}
 }
 
 @Getter
