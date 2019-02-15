@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mvn clean install -DskipTests
+mvn clean install
 docker-compose build
 docker-compose create
 docker-compose restart

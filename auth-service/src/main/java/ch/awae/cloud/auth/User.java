@@ -17,8 +17,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Data
 @NoArgsConstructor
+@Data
 @Entity
 @Table(name = "auth_users")
 public class User {
