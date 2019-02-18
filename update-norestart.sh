@@ -2,8 +2,6 @@
 
 mvn clean install
 docker-compose build
-docker-compose create
-#docker-compose restart
 
 echo installing client...
 
