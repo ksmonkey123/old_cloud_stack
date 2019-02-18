@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../model/user';
+import { Role } from '../model/role';
 import { map } from 'rxjs/operators';
 
 @Injectable()
@@ -9,7 +10,8 @@ export class UserService {
 
   urls = {
     info: '/api/auth/me',
-    password: '/api/auth/password'
+    password: '/api/auth/password',
+    roles: '/api/auth/roles'
   };
 
   constructor(private http: HttpClient) { }
@@ -22,6 +24,10 @@ export class UserService {
     return this.http.post(this.urls.password, { password: oldPW, newPassword: newPW })
       .pipe(
         map(x => true));
+  }
+
+  getRoles(): Observable<Role[]> {
+    return this.http.get<Role[]>(this.urls.roles);
   }
 
 }

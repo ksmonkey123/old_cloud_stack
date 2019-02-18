@@ -20,6 +20,7 @@ import { ShortenComponent } from './shorten/shorten.component';
 import { ShortenService } from './shorten/shorten.service';
 import { EliteRouteComponent } from './elite-route/elite-route.component';
 import { EliteRouteService } from './elite-route/elite-route.service';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { EliteRouteService } from './elite-route/elite-route.service';
     UserComponent,
     RootComponent,
     ShortenComponent,
-    EliteRouteComponent
+    EliteRouteComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

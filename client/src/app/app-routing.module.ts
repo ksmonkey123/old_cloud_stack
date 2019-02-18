@@ -7,6 +7,7 @@ import { UserComponent } from './user/user.component';
 import { RootComponent } from './root/root.component';
 import { ShortenComponent } from './shorten/shorten.component';
 import { EliteRouteComponent } from './elite-route/elite-route.component';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -16,7 +17,8 @@ const routes: Routes = [
       {path: 'home', component: HomeComponent},
       {path: 'user', component: UserComponent},
       {path: 'shorten', component: ShortenComponent},
-      {path: 'elite-route', component: EliteRouteComponent}
+      {path: 'elite-route', component: EliteRouteComponent},
+      {path: 'admin', component: AdminComponent}
     ]
   }
 ];

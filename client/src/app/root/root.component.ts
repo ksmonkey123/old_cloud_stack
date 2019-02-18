@@ -15,12 +15,13 @@ export class RootComponent implements OnInit {
   isCollapsed = true;
 
   links = [
-    { text: "Shortener", route: "/shorten" },
-    {text: "E:D Router", route: "/elite-route"}
+    { text: "Shortener", route: "/shorten", role: "ROLE_USER" },
+    { text: "E:D Router", route: "/elite-route", role: "ROLE_USER" }
   ]
 
   user: User;
 
+  isAdmin: boolean = false;
   username: string;
   alerts: Alert[] = [];
 
@@ -34,7 +35,14 @@ export class RootComponent implements OnInit {
     this.userService.getUserInfo().subscribe(
       (u: User) => {
         this.user = u;
-        this.username = u.username;
+        if (u.roles.includes("ROLE_ADMIN")) {
+          this.username = u.username + " (Admin)";
+        this.isAdmin = true;
+        }
+        else
+          this.username = u.username + " (User)";
+        this.links = this.links.filter(link => u.roles.includes(link.role));
+        console.log(this.links);
       },
       (error: Error) => {
         console.log(error)
@@ -50,6 +58,10 @@ export class RootComponent implements OnInit {
 
   openSettings() {
     this.router.navigate(['/user']);
+  }
+
+  openAdminPanel() {
+    this.router.navigate(['/admin']);
   }
 
   addAlert(alert: Alert) {

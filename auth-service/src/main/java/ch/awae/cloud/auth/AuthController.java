@@ -30,6 +30,7 @@ import lombok.val;
 public class AuthController {
 
 	private UserRepo repo;
+	private RoleRepository roleRepo;
 	private PasswordEncoder crypto;
 	private	TokenService token;
 
@@ -100,6 +101,12 @@ public class AuthController {
 	@GetMapping("/users")
 	public List<User> getUserList() {
 		return repo.findAll();
+	}
+	
+	@Secured("ROLE_ADMIN")
+	@GetMapping("/roles")
+	public List<Role> getRoles() {
+		return roleRepo.findAllByOrderBySortAscNameAsc();
 	}
 
 	@Secured("ROLE_ADMIN")
