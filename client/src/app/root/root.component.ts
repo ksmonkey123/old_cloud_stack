@@ -34,10 +34,7 @@ export class RootComponent implements OnInit {
     this.userService.getUserInfo().subscribe(
       (u: User) => {
         this.user = u;
-        if (u.admin)
-          this.username = u.username + " (Admin)";
-        else
-          this.username = u.username + " (User)";
+        this.username = u.username;
       },
       (error: Error) => {
         console.log(error)

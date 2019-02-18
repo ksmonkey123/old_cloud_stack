@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,19 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 import ch.awae.cloud.exception.BadRequestException;
 import ch.awae.cloud.exception.ResourceNotFoundException;
 import ch.awae.cloud.security.Security;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.val;
 
+@AllArgsConstructor
 @RestController
 public class AuthController {
 
-	@Autowired
-	UserRepo repo;
-
-	@Autowired
-	PasswordEncoder crypto;
-
-	@Autowired
-	TokenService token;
+	private UserRepo repo;
+	private PasswordEncoder crypto;
+	private	TokenService token;
 
 	@PostMapping("/login")
 	public TokenPair login(@Valid @RequestBody LoginRequest request) {
@@ -112,7 +109,13 @@ public class AuthController {
 		if (myId == userId)
 			throw new BadRequestException("cannot change your own roles");
 		User user = repo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user", "id", userId));
-		user.setAdmin(request.isAdmin());
+		
+		val roles = user.getRoles();
+		if (!request.isAdmin())
+			roles.remove("ROLE_ADMIN");
+		else if (!roles.contains("ROLE_ADMIN"))
+			roles.add("ROLE_ADMIN");
+		
 		repo.save(user);
 	}
 

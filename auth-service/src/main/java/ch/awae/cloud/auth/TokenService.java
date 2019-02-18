@@ -40,12 +40,13 @@ public class TokenService {
 	private static Logger logger = LoggerFactory.getLogger(TokenService.class);
 
 	private RawToken generateToken(User user, String secret, Long expiration) {
+		System.out.println(user);
 		Date now = new Date();
 		Date expiryDate = new Date(now.getTime() + expiration);
 		val claims = new HashMap<String, Object>();
 
 		claims.put("usr", user.getUsername());
-		claims.put("aut", user.isAdmin() ? "ROLE_USER,ROLE_ADMIN" : "ROLE_USER");
+		claims.put("aut", String.join(",", user.getRoles()));
 
 		String token = Jwts.builder() //
 				.setSubject(Long.toString(user.getId())) //

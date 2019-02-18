@@ -1,7 +1,10 @@
 package ch.awae.cloud.auth;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,12 +36,16 @@ public class User {
 	@JsonIgnore
 	private String password;
 
-	private boolean admin;
+	@Convert(converter = StringListConverter.class)
+	private List<String> roles;
 
 	public User(String username, String password, boolean isAdmin) {
 		this.username = username;
 		this.password = password;
-		this.admin = isAdmin;
+		roles = new ArrayList<>();
+		roles.add("ROLE_USER");
+		if (isAdmin)
+			roles.add("ROLE_ADMIN");
 	}
 
 }
