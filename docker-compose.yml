@@ -48,4 +48,10 @@ services:
     restart: always
     ports:
       - 7777:7777
+      
+  ytdl-service:
+    container_name: ytdl-service
+    build: ytdl-service
+    image: ch.awae/ytdl-service
+    restart: always
     
