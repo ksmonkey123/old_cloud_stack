@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mvn clean install
+mvn clean install -DskipTests
 
 echo installing client...
 
