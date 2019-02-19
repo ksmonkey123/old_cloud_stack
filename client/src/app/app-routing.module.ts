@@ -10,6 +10,7 @@ import { EliteRouteComponent } from './elite-route/elite-route.component';
 import { AdminComponent } from './admin/admin.component';
 import { UserAdminComponent } from './admin/user-admin/user-admin.component';
 import { CreateUserComponent } from './admin/create-user/create-user.component';
+import { NetcodeComponent } from './netcode/netcode.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -25,7 +26,8 @@ const routes: Routes = [
           { path: 'user/:id', component: UserAdminComponent },
           { path: 'createUser', component: CreateUserComponent }
         ]
-      }
+      },
+      { path: 'netcode', component: NetcodeComponent },
     ]
   }
 ];

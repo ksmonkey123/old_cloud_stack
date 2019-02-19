@@ -4,6 +4,7 @@ import { AuthService } from '../auth/auth.service';
 import { UserService } from '../user/user.service';
 import { User } from '../model/user';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Alert } from './alert';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +17,9 @@ export class RootComponent implements OnInit {
 
   links = [
     { text: "Shortener", route: "/shorten", role: "ROLE_SHORTEN" },
-    { text: "E:D Router", route: "/elite-route", role: "ROLE_ELITE" }
-  ]
+    { text: "E:D Router", route: "/elite-route", role: "ROLE_ELITE" },
+    { text: "Netcode", route: "/netcode", role: "ROLE_NETCODE" },
+  ];
 
   user: User;
 
@@ -37,7 +39,7 @@ export class RootComponent implements OnInit {
         this.user = u;
         if (u.roles.includes("ROLE_ADMIN")) {
           this.username = u.username + " (Admin)";
-        this.isAdmin = true;
+          this.isAdmin = true;
         }
         else
           this.username = u.username + " (User)";
@@ -45,8 +47,7 @@ export class RootComponent implements OnInit {
       },
       (error: Error) => {
         console.log(error)
-      })
-    console.log("hi");
+      });
   }
 
   doLogout() {
@@ -65,6 +66,10 @@ export class RootComponent implements OnInit {
 
   addAlert(alert: Alert) {
     this.alerts.push(alert);
+  }
+
+  addSuccessAlert(message: string, parent: any) {
+    this.addAlert({ type: "success", message: message, parent: parent });
   }
 
   closeAlerts(parent: any) {
@@ -94,10 +99,4 @@ export class RootComponent implements OnInit {
 
   }
 
-}
-
-export interface Alert {
-  type: string;
-  message: string;
-  parent: any;
 }

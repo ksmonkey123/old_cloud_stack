@@ -66,6 +66,6 @@ interface AppRepo extends JpaRepository<App, Long> {
 	
 	Optional<App> findByIdentifierAndUser(String identifier, Long user);
 	
-	List<App> findByUserOrderByCreatedDesc(Long user);
+	List<App> findByUserOrderByCreatedAsc(Long user);
 
 }

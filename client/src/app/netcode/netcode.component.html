@@ -1,0 +1,45 @@
+<h1>Netcode Apps</h1>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th width="30%">Name</th>
+      <th width="70%">Identifier</th>
+      <th widht="30px">&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let a of apps">
+      <td>{{a.name}}</td>
+      <td>{{a.identifier}}</td>
+      <td><button type="button" class="btn btn-danger" (click)="open(content, a.identifier)">X</button></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="app name" [(ngModel)]="newApp" />
+          <div class="input-group-append">
+            <button type="button" class="btn btn-primary" (click)="addApp()">Add</button>
+          </div>
+        </div>
+      </td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Delete App</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      This action cannot be reverted!
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Delete click')">Delete App</button>
+    </div>
+  </ng-template>

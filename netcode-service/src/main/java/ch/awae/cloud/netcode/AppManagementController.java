@@ -24,23 +24,25 @@ public class AppManagementController {
 	private @Autowired Generator generator;
 
 	@GetMapping("/list")
-	@Secured("ROLE_USER")
+	@Secured("ROLE_NETCODE")
 	public List<App> getUserAppList() {
-		return repo.findByUserOrderByCreatedDesc(Security.getUserId());
+		return repo.findByUserOrderByCreatedAsc(Security.getUserId());
 	}
 
 	@PostMapping("/app")
-	@Secured("ROLE_USER")
+	@Secured("ROLE_NETCODE")
 	public App createApp(@Valid @RequestBody CreateRequest request) {
 		long userId = Security.getUserId();
 		String id = generator.generateSequence(s -> !repo.findByIdentifier(s).isPresent());
 		String name = request.getName();
 
-		return repo.save(new App(userId, id, name));
+		App app = new App(userId, id, name);
+
+		return repo.save(app);
 	}
 
 	@DeleteMapping("/app/{identifier}")
-	@Secured("ROLE_USER")
+	@Secured("ROLE_NETCODE")
 	public void deleteApp(@PathVariable("identifier") String id) {
 		App app = repo.findByIdentifierAndUser(id, Security.getUserId())
 				.orElseThrow(() -> new ResourceNotFoundException("app", "identifier", id));

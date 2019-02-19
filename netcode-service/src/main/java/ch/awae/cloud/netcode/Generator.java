@@ -21,7 +21,7 @@ public class Generator {
 			String candidate = encoder.encodeToString(bytes);
 			if (candidate.contains("_") || candidate.contains("-"))
 				continue;
-			return candidate.substring(0, 6);
+			return candidate.substring(0, 32);
 		}
 	}
 

@@ -24,6 +24,8 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminService } from './admin/admin.service';
 import { UserAdminComponent } from './admin/user-admin/user-admin.component';
 import { CreateUserComponent } from './admin/create-user/create-user.component';
+import { NetcodeComponent } from './netcode/netcode.component';
+import { NetcodeService } from './netcode/netcode.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import { CreateUserComponent } from './admin/create-user/create-user.component';
     EliteRouteComponent,
     AdminComponent,
     UserAdminComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    NetcodeComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +54,7 @@ import { CreateUserComponent } from './admin/create-user/create-user.component';
     ShortenService,
     EliteRouteService,
     AdminService,
+    NetcodeService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
