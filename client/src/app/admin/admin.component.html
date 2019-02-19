@@ -1,5 +1,6 @@
 <h1>Admin Panel</h1>
 
+<h2>User Role Management</h2>
 <table class="table table-hover">
   <thead>
     <tr>
@@ -11,7 +12,10 @@
   <tbody>
     <tr *ngFor="let u of users">
       <th scope="row">{{u.id}}</th>
-      <td>{{u.username}}</td>
+      <td>
+        <a *ngIf="!(currentUser != undefined && u.id == currentUser.id)" [routerLink]="['/admin/user', u.id]">{{u.username}}</a>
+        <i *ngIf="(currentUser != undefined && u.id == currentUser.id)">{{u.username}}</i>
+      </td>
       <td *ngFor="let r of roles" class="text-center">
         <input [ngModel]='u.roles.includes(r.role)' type="checkbox" (click)='updateRole(u, r)'
         [attr.disabled]="((currentUser != undefined && u.id == currentUser.id) || (r.role != 'ROLE_ADMIN' && u.roles.includes('ROLE_ADMIN'))) ? '' : null">
@@ -19,4 +23,11 @@
     </tr>
   </tbody>
 </table>
+
+<button type="button" class="btn btn-success" [routerLink]="['/admin/createUser']">New User</button>
+
 <div *ngIf="busy" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%">&nbsp;</div>
+
+<hr/>
+
+<router-outlet></router-outlet>

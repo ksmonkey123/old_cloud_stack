@@ -14,7 +14,7 @@ export class AdminComponent implements OnInit {
   roles: Role[];
   users: User[];
 
-  busy: number = 3;
+  busy: number = 0;
   currentUser: User;
 
   constructor(
@@ -23,6 +23,7 @@ export class AdminComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.busy += 3;
     this.userService.getUserInfo().subscribe(u => {
       this.currentUser = u;
       this.busy--;

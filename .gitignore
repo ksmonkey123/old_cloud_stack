@@ -2,3 +2,4 @@ org.eclipse.m2e.core.prefs
 /client/node_modules
 elite-service/dump.json
 elite-service/load.sql
+/client/dist/out-tsc

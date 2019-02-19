@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,12 +38,11 @@ public class AdminController {
 	@Secured("ROLE_ADMIN")
 	@PostMapping("/user/{userId}/password")
 	public void changeOtherPasssword(@PathVariable("userId") Long userId,
-			@Valid @RequestBody PasswordChangeRequest request) {
+			@Valid @RequestBody PasswordChangeRequestByAdmin request) {
 		repo.findById(Security.getUserId()) //
-				.filter(usr -> crypto.matches(request.getPassword(), usr.getPassword()))
 				.orElseThrow(() -> new BadRequestException("bad request"));
 		User user = repo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user", "id", userId));
-		user.setPassword(crypto.encode(request.getNewPassword()));
+		user.setPassword(crypto.encode(request.getPassword()));
 		repo.save(user);
 	}
 
@@ -76,6 +76,12 @@ public class AdminController {
 	public List<Role> getRoles() {
 		return roleRepo.findAllByOrderBySortAscNameAsc();
 	}
+	
+	@Secured("ROLE_ADMIN")
+	@GetMapping("/user/{userId}")
+	public User getUser(@PathVariable("userId") Long userId) {
+		return repo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user", "id", userId));
+	}
 
 	@Secured("ROLE_ADMIN")
 	@PatchMapping("/user/{userId}/role")
@@ -96,6 +102,16 @@ public class AdminController {
 
 		return getUserList();
 	}
+	
+	@Secured("ROLE_ADMIN")
+	@DeleteMapping("/user/{userId}")
+	public void deleteUser(@PathVariable("userId") Long userId) {
+		long myId = Security.getUserId();
+		if (myId == userId)
+			throw new BadRequestException("cannot delete yourself!");
+		User user = repo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user", "id", userId));
+		repo.delete(user);
+	}
 
 }
 
@@ -108,4 +124,9 @@ class SignupRequest {
 @Data
 class RoleChangeRequest {
 	private List<String> roles;
+}
+
+@Data
+class PasswordChangeRequestByAdmin {
+	private @NotBlank @Size(min = 6, max = 20) String password;
 }

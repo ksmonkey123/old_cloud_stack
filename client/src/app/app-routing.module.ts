@@ -8,17 +8,24 @@ import { RootComponent } from './root/root.component';
 import { ShortenComponent } from './shorten/shorten.component';
 import { EliteRouteComponent } from './elite-route/elite-route.component';
 import { AdminComponent } from './admin/admin.component';
+import { UserAdminComponent } from './admin/user-admin/user-admin.component';
+import { CreateUserComponent } from './admin/create-user/create-user.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: '', component: RootComponent, canActivate: [AuthGuard], children: [
-      {path: '', component: HomeComponent},
-      {path: 'home', component: HomeComponent},
-      {path: 'user', component: UserComponent},
-      {path: 'shorten', component: ShortenComponent},
-      {path: 'elite-route', component: EliteRouteComponent},
-      {path: 'admin', component: AdminComponent}
+      { path: '', component: HomeComponent },
+      { path: 'home', component: HomeComponent },
+      { path: 'user', component: UserComponent },
+      { path: 'shorten', component: ShortenComponent },
+      { path: 'elite-route', component: EliteRouteComponent },
+      {
+        path: 'admin', component: AdminComponent, children: [
+          { path: 'user/:id', component: UserAdminComponent },
+          { path: 'createUser', component: CreateUserComponent }
+        ]
+      }
     ]
   }
 ];

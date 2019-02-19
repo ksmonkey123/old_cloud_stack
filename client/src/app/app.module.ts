@@ -22,6 +22,8 @@ import { EliteRouteComponent } from './elite-route/elite-route.component';
 import { EliteRouteService } from './elite-route/elite-route.service';
 import { AdminComponent } from './admin/admin.component';
 import { AdminService } from './admin/admin.service';
+import { UserAdminComponent } from './admin/user-admin/user-admin.component';
+import { CreateUserComponent } from './admin/create-user/create-user.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { AdminService } from './admin/admin.service';
     RootComponent,
     ShortenComponent,
     EliteRouteComponent,
-    AdminComponent
+    AdminComponent,
+    UserAdminComponent,
+    CreateUserComponent
   ],
   imports: [
     BrowserModule,

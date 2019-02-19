@@ -10,8 +10,11 @@ export class AdminService {
 
   urls = {
     roles: '/api/auth/roles',
-    users: 'api/auth/users',
-    patchRoles: (id: number) => `api/auth/user/${id}/role`
+    users: '/api/auth/users',
+    patchRoles: (id: number) => `/api/auth/user/${id}/role`,
+    user: (id: number) => `/api/auth/user/${id}`,
+    postPassword: (id: number) => `/api/auth/user/${id}/password`,
+    postUser: '/api/auth/user'
   };
 
   constructor(private http: HttpClient) { }
@@ -24,8 +27,25 @@ export class AdminService {
     return this.http.get<User[]>(this.urls.users);
   }
 
+  getUser(id: number): Observable<User> {
+    return this.http.get<User>(this.urls.user(id));
+  }
+
   patchRoles(id: number, roles: string[]): Observable<User[]> {
-    return this.http.patch<User[]>(this.urls.patchRoles(id), {roles: roles});
+    return this.http.patch<User[]>(this.urls.patchRoles(id), { roles: roles });
+  }
+
+  updateUserPassword(id: number, pw: string): Observable<boolean> {
+    return this.http.post<any>(this.urls.postPassword(id), { password: pw }).pipe(map(x => true));
+  }
+
+  createUser(username: string, password: string): Observable<boolean> {
+    return this.http.post<any>(this.urls.postUser, { username: username, password: password })
+      .pipe(map(x => true));
+  }
+
+  deleteUser(id: number): Observable<boolean> {
+    return this.http.delete<any>(this.urls.user(id)).pipe(map(x => true));
   }
 
 }

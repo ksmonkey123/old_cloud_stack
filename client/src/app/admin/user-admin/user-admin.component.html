@@ -1,0 +1,43 @@
+<h2>User Configuration: {{user.username}}</h2>
+
+<div class="card mt-5">
+  <div class="card-header bg-primary text-white">
+    Change Password
+  </div>
+  <div class="card-body">
+    <form class="form-changePW" #f="ngForm" (ngSubmit)="changePassword()">
+      <input type="password" id="newPW" class="form-control" placeholder="new password" name="password"
+        [(ngModel)]="pwmodel.newpassword" required="">
+      <br />
+      <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+  </div>
+</div>
+
+<div class="card mt-5">
+  <div class="card-header bg-danger text-white">
+    Delete User
+  </div>
+  <div class="card-body">
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Delete User</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        This action cannot be reverted!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Delete click')">Delete User</button>
+      </div>
+    </ng-template>
+    <button class="btn btn-danger" (click)="open(content)">Delete</button>
+  </div>
+</div>
+
+<hr />
+<div class="btn-group" role="group">
+  <button type="button" class="btn btn-primary" [routerLink]="['/admin']">Close</button>
+</div>

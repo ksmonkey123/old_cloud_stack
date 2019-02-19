@@ -1,0 +1,22 @@
+<h2>Create User</h2>
+
+<div class="card mt-5">
+    <div class="card-header bg-primary text-white">
+      Change Password
+    </div>
+    <div class="card-body">
+      <form class="form-createUser" #f="ngForm" (ngSubmit)="createUser()">
+        <input type="text" id="pw" class="form-control" placeholder="username" name="username"
+          [(ngModel)]="userModel.username" required="">
+          <input type="password" id="pw" class="form-control" placeholder="password" name="password"
+          [(ngModel)]="userModel.password" required="">
+        <br />
+        <button class="btn btn-primary" type="submit">Save</button>
+      </form>
+    </div>
+  </div>
+
+<hr />
+<div class="btn-group" role="group">
+  <button type="button" class="btn btn-primary" [routerLink]="['/admin']">Close</button>
+</div>
