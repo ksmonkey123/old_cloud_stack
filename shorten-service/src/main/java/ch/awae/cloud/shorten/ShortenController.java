@@ -26,13 +26,13 @@ public class ShortenController {
 	private @Autowired Generator generator;
 
 	@GetMapping("/list")
-	@Secured("ROLE_USER")
+	@Secured("ROLE_SHORTEN")
 	public List<Entry> getUserLinkList() {
 		return repo.findByUserOrderByCreatedDesc(Security.getUserId());
 	}
 
 	@PostMapping("/link")
-	@Secured("ROLE_USER")
+	@Secured("ROLE_SHORTEN")
 	public Entry createLink(@Valid @RequestBody CreateRequest request) {
 		long userId = Security.getUserId();
 		String id = generator.generateSequence(s -> !repo.findByIdentifier(s).isPresent());
@@ -42,7 +42,7 @@ public class ShortenController {
 	}
 
 	@PatchMapping("/link/{identifier}")
-	@Secured("ROLE_USER")
+	@Secured("ROLE_SHORTEN")
 	public Entry patchLink(@PathVariable("identifier") String id, @Valid @RequestBody PatchRequest request) {
 		Entry e = repo.findByIdentifier(id).orElseThrow(() -> new ResourceNotFoundException("link", "identifier", id));
 

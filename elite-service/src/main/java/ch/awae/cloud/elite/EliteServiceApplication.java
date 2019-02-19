@@ -67,7 +67,7 @@ class CheckEndpointController {
 		return name;
 	}
 
-	@Secured("ROLE_USER")
+	@Secured("ROLE_ELITE")
 	@GetMapping("/path")
 	public Object findPath( //
 			@RequestParam("from") String from, //
