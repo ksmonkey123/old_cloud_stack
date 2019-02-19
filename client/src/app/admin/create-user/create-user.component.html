@@ -6,9 +6,9 @@
     </div>
     <div class="card-body">
       <form class="form-createUser" #f="ngForm" (ngSubmit)="createUser()">
-        <input type="text" id="pw" class="form-control" placeholder="username"
+        <input type="text" class="form-control" placeholder="username" name="theUserName"
           [(ngModel)]="userModel.username" required="">
-          <input type="password" id="pw" class="form-control" placeholder="password"
+          <input type="password" class="form-control" placeholder="password" name="theUserPass"
           [(ngModel)]="userModel.password" required="">
         <br />
         <button class="btn btn-primary" type="submit">Create</button>
