@@ -16,7 +16,7 @@
 		<module>elite-service</module>
 		<module>shorten-service</module>
 		<module>netcode-service</module>
-		<module>ytld-service</module>
+		<module>ytdl-service</module>
 	</modules>
 
 </project>

@@ -1,8 +1,8 @@
 FROM java:8-jre
 
 RUN apt-get update
-RUN apt-get -y youtube-dl
-RUN apt-get -y ffmpeg
+RUN apt-get install -y youtube-dl
+RUN apt-get install -y ffmpeg
 
 ADD ./target/ytdl-service.jar /app/
 CMD ["java", "-Xmx200m", "-jar", "/app/ytdl-service.jar"]
