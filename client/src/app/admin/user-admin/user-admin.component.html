@@ -6,7 +6,7 @@
   </div>
   <div class="card-body">
     <form class="form-changePW" #f="ngForm" (ngSubmit)="changePassword()">
-      <input type="password" id="newPW" class="form-control" placeholder="new password"
+      <input type="password" class="form-control" placeholder="new password" autocomplete="off"
         [(ngModel)]="pwmodel.newpassword" required="">
       <br />
       <button class="btn btn-primary" type="submit">Save</button>

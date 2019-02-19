@@ -6,10 +6,10 @@
     </div>
     <div class="card-body">
       <form class="form-createUser" #f="ngForm" (ngSubmit)="createUser()">
-        <input type="text" class="form-control" placeholder="username" name="theUserName"
-          [(ngModel)]="userModel.username" required="">
-          <input type="password" class="form-control" placeholder="password" name="theUserPass"
-          [(ngModel)]="userModel.password" required="">
+        <input type="text" class="form-control" placeholder="username"
+          [(ngModel)]="userModel.username" required="" autocomplete="off">
+          <input type="password" class="form-control" placeholder="password"
+          [(ngModel)]="userModel.password" required="" autocomplete="off">
         <br />
         <button class="btn btn-primary" type="submit">Create</button>
       </form>
