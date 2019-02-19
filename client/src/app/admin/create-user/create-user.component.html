@@ -2,16 +2,16 @@
 
 <div class="card mt-5">
     <div class="card-header bg-primary text-white">
-      Change Password
+      Create User
     </div>
     <div class="card-body">
       <form class="form-createUser" #f="ngForm" (ngSubmit)="createUser()">
-        <input type="text" id="pw" class="form-control" placeholder="username" name="username"
+        <input type="text" id="pw" class="form-control" placeholder="username"
           [(ngModel)]="userModel.username" required="">
-          <input type="password" id="pw" class="form-control" placeholder="password" name="password"
+          <input type="password" id="pw" class="form-control" placeholder="password"
           [(ngModel)]="userModel.password" required="">
         <br />
-        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-primary" type="submit">Create</button>
       </form>
     </div>
   </div>
