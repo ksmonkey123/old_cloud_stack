@@ -3,6 +3,7 @@ package ch.awae.cloud.auth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -39,13 +40,17 @@ public class User {
 	@Convert(converter = StringListConverter.class)
 	private List<String> roles;
 
-	public User(String username, String password, boolean isAdmin) {
+	public User(String username, String password, List<String> roles) {
 		this.username = username;
 		this.password = password;
-		roles = new ArrayList<>();
-		roles.add("ROLE_USER");
-		if (isAdmin)
-			roles.add("ROLE_ADMIN");
+		if (roles != null)
+			this.roles = roles;
+		else
+			this.roles = new ArrayList<>();
+	}
+	
+	public void patchRoles(Function<List<String>, List<String>> f) {
+		this.roles = f.apply(this.roles);
 	}
 
 }

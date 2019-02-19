@@ -11,12 +11,14 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "auth_roles")
 public class Role {

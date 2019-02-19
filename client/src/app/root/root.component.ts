@@ -15,8 +15,8 @@ export class RootComponent implements OnInit {
   isCollapsed = true;
 
   links = [
-    { text: "Shortener", route: "/shorten", role: "ROLE_USER" },
-    { text: "E:D Router", route: "/elite-route", role: "ROLE_USER" }
+    { text: "Shortener", route: "/shorten", role: "ROLE_SHORTEN" },
+    { text: "E:D Router", route: "/elite-route", role: "ROLE_ELITE" }
   ]
 
   user: User;
@@ -42,7 +42,6 @@ export class RootComponent implements OnInit {
         else
           this.username = u.username + " (User)";
         this.links = this.links.filter(link => u.roles.includes(link.role));
-        console.log(this.links);
       },
       (error: Error) => {
         console.log(error)

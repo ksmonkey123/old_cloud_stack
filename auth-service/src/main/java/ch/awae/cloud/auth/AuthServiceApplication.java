@@ -29,7 +29,7 @@ public class AuthServiceApplication {
 	public CommandLineRunner runner(PasswordEncoder crypt, UserRepo repo) {
 		return args -> {
 			if (!repo.findByUsername("test").isPresent())
-				repo.save(new User("test", crypt.encode("password"), true));
+				repo.save(new User("test", crypt.encode("password"), null));
 		};
 	}
 

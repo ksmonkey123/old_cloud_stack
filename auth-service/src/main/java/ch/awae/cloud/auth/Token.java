@@ -37,6 +37,7 @@ public class Token {
 	@Column(name = "exp_dat")
 	private Timestamp expires;
 
+	@Column(length = 1000)
 	private String token;
 
 	public Token(User user, Timestamp cre_dat, Timestamp exp_dat, String token) {

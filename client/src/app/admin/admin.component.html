@@ -1,4 +1,22 @@
 <h1>Admin Panel</h1>
-<ul>
-  <li *ngFor="let r of roles">{{r}}</li>
-</ul>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col" width=40>#</th>
+      <th scope="col">User</th>
+      <th *ngFor="let r of roles" class="text-center">{{r.name}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let u of users">
+      <th scope="row">{{u.id}}</th>
+      <td>{{u.username}}</td>
+      <td *ngFor="let r of roles" class="text-center">
+        <input [ngModel]='u.roles.includes(r.role)' type="checkbox" (click)='updateRole(u, r)'
+        [attr.disabled]="((currentUser != undefined && u.id == currentUser.id) || (r.role != 'ROLE_ADMIN' && u.roles.includes('ROLE_ADMIN'))) ? '' : null">
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="busy" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%">&nbsp;</div>

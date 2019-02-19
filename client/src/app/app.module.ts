@@ -21,6 +21,7 @@ import { ShortenService } from './shorten/shorten.service';
 import { EliteRouteComponent } from './elite-route/elite-route.component';
 import { EliteRouteService } from './elite-route/elite-route.service';
 import { AdminComponent } from './admin/admin.component';
+import { AdminService } from './admin/admin.service';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AdminComponent } from './admin/admin.component';
     UserService,
     ShortenService,
     EliteRouteService,
+    AdminService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,

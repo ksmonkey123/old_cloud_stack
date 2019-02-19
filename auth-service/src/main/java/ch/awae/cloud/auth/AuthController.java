@@ -1,5 +1,6 @@
 package ch.awae.cloud.auth;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -22,7 +23,7 @@ import ch.awae.cloud.exception.BadRequestException;
 import ch.awae.cloud.exception.ResourceNotFoundException;
 import ch.awae.cloud.security.Security;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.val;
 
 @AllArgsConstructor
@@ -31,14 +32,16 @@ public class AuthController {
 
 	private UserRepo repo;
 	private RoleRepository roleRepo;
+	private RoleService roleService;
 	private PasswordEncoder crypto;
-	private	TokenService token;
+	private TokenService token;
 
 	@PostMapping("/login")
 	public TokenPair login(@Valid @RequestBody LoginRequest request) {
 		User user = repo.findByUsername(request.getUsername())
 				.filter(u -> crypto.matches(request.getPassword(), u.getPassword()))
 				.orElseThrow(() -> new BadRequestException("invalid credentials"));
+		user.patchRoles(roleService::getCompletedRoleList);
 		return token.generateTokenPair(user);
 	}
 
@@ -93,16 +96,19 @@ public class AuthController {
 	public void createUser(@Valid @RequestBody SignupRequest request) {
 		if (existsUser(request.getUsername()))
 			throw new BadRequestException("user '" + request.getUsername() + "' already exists");
-		User user = new User(request.getUsername(), crypto.encode(request.getPassword()), request.isAdmin());
+		User user = new User(request.getUsername(), crypto.encode(request.getPassword()), null);
 		repo.save(user);
 	}
 
 	@Secured("ROLE_ADMIN")
 	@GetMapping("/users")
 	public List<User> getUserList() {
-		return repo.findAll();
+		val list = repo.findAll();
+		for (val user : list)
+			user.patchRoles(roleService::getCompletedRoleList);
+		return list;
 	}
-	
+
 	@Secured("ROLE_ADMIN")
 	@GetMapping("/roles")
 	public List<Role> getRoles() {
@@ -111,43 +117,44 @@ public class AuthController {
 
 	@Secured("ROLE_ADMIN")
 	@PatchMapping("/user/{userId}/role")
-	public void patchUserRole(@PathVariable("userId") Long userId, @Valid @RequestBody RoleChangeRequest request) {
+	public List<User> patchUserRole(@PathVariable("userId") Long userId, @Valid @RequestBody RoleChangeRequest request) {
 		long myId = Security.getUserId();
 		if (myId == userId)
 			throw new BadRequestException("cannot change your own roles");
 		User user = repo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user", "id", userId));
-		
-		val roles = user.getRoles();
-		if (!request.isAdmin())
-			roles.remove("ROLE_ADMIN");
-		else if (!roles.contains("ROLE_ADMIN"))
-			roles.add("ROLE_ADMIN");
+
+		val roles = request.getRoles();
+		if (roles.contains("ROLE_ADMIN"))
+			user.setRoles(Arrays.asList("ROLE_ADMIN"));
+		else
+			user.setRoles(roles);
 		
 		repo.save(user);
+		
+		return getUserList();
 	}
 
 }
 
-@Getter
+@Data
 class LoginRequest {
 	private @NotBlank String username;
 	private @NotBlank String password;
 }
 
-@Getter
+@Data
 class PasswordChangeRequest {
 	private @NotBlank String password;
 	private @NotBlank @Size(min = 6, max = 20) String newPassword;
 }
 
-@Getter
+@Data
 class SignupRequest {
 	private @NotBlank @Size(min = 3, max = 15) String username;
 	private @NotBlank @Size(min = 6, max = 20) String password;
-	private boolean admin;
 }
 
-@Getter
+@Data
 class RoleChangeRequest {
-	private boolean admin;
+	private List<String> roles;
 }

@@ -10,8 +10,7 @@ export class UserService {
 
   urls = {
     info: '/api/auth/me',
-    password: '/api/auth/password',
-    roles: '/api/auth/roles'
+    password: '/api/auth/password'
   };
 
   constructor(private http: HttpClient) { }
@@ -24,10 +23,6 @@ export class UserService {
     return this.http.post(this.urls.password, { password: oldPW, newPassword: newPW })
       .pipe(
         map(x => true));
-  }
-
-  getRoles(): Observable<Role[]> {
-    return this.http.get<Role[]>(this.urls.roles);
   }
 
 }
