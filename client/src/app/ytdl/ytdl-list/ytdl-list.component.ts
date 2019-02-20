@@ -18,7 +18,7 @@ export class YtdlListComponent implements OnInit, OnDestroy {
   formats: FormatListEntry[] = [];
   jobs: JobSummary[] = [];
   model = new AddJobFormModel();
-  timer: NodeJS.Timer;
+  timer: any;
 
   ngOnInit() {
     this.service.getFormatList().subscribe(f => {
