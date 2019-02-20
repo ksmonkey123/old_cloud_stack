@@ -1,0 +1,24 @@
+<hr />
+<h2>Download Video</h2>
+
+    <input class="form-control" type="text" placeholder="video URL" [(ngModel)]="model.url" />
+    <table class="format-selection">
+        <tr>
+            <td *ngFor="let e of formats">
+                <b>{{e.category}}</b>
+                <ul class="list-inline">
+                    <li class="list-inline-item" *ngFor="let f of e.formats">
+                        <input type="checkbox" [(ngModel)]="model.formats[f.id]" /> {{f.name}}</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <button class="btn btn-success" (click)="onAdd()">Download</button>
+
+
+<div *ngFor="let job of jobs">
+    ID: {{job.id}}<br/>
+    URL: {{job.url}}<br/>
+    Status: {{job.status}}<br/>
+    progress: {{job.files}} / {{job.formats}}
+</div>

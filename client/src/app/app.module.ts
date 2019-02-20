@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbProgressbar, NgbProgressbarModule, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
@@ -27,6 +27,9 @@ import { CreateUserComponent } from './admin/create-user/create-user.component';
 import { NetcodeComponent } from './netcode/netcode.component';
 import { NetcodeService } from './netcode/netcode.service';
 import { YtdlComponent } from './ytdl/ytdl.component';
+import { YtdlService } from './ytdl/ytdl.service';
+import { YtdlListComponent } from './ytdl/ytdl-list/ytdl-list.component';
+import { YtdlDetailsComponent } from './ytdl/ytdl-details/ytdl-details.component';
 
 @NgModule({
   declarations: [
@@ -41,14 +44,17 @@ import { YtdlComponent } from './ytdl/ytdl.component';
     UserAdminComponent,
     CreateUserComponent,
     NetcodeComponent,
-    YtdlComponent
+    YtdlComponent,
+    YtdlListComponent,
+    YtdlDetailsComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    NgbProgressbarModule,
   ],
   providers: [
     AuthService,
@@ -57,6 +63,7 @@ import { YtdlComponent } from './ytdl/ytdl.component';
     EliteRouteService,
     AdminService,
     NetcodeService,
+    YtdlService,
     AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,

@@ -19,6 +19,7 @@ export class RootComponent implements OnInit {
     { text: "Shortener", route: "/shorten", role: "ROLE_SHORTEN" },
     { text: "E:D Router", route: "/elite-route", role: "ROLE_ELITE" },
     { text: "Netcode", route: "/netcode", role: "ROLE_NETCODE" },
+    { text: "Youtube-Download", route: "/ytdl/list", role: "ROLE_YTDL" },
   ];
 
   user: User;

@@ -11,6 +11,8 @@ import { AdminComponent } from './admin/admin.component';
 import { UserAdminComponent } from './admin/user-admin/user-admin.component';
 import { CreateUserComponent } from './admin/create-user/create-user.component';
 import { NetcodeComponent } from './netcode/netcode.component';
+import { YtdlComponent } from './ytdl/ytdl.component';
+import { YtdlListComponent } from './ytdl/ytdl-list/ytdl-list.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -28,6 +30,11 @@ const routes: Routes = [
         ]
       },
       { path: 'netcode', component: NetcodeComponent },
+      {
+        path: 'ytdl', component: YtdlComponent, children: [
+          { path: 'list', component: YtdlListComponent }
+        ]
+      }
     ]
   }
 ];

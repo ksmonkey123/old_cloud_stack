@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import "~bootstrap/dist/css/bootstrap.css";
 
-@import "~bootstrap/dist/css/bootstrap.css"
+
+.progress-bar-animated {
+    animation: progress-bar-stripes 1s linear infinite;
+}

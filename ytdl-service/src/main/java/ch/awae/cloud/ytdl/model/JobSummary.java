@@ -9,6 +9,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +23,7 @@ public class JobSummary {
 	@Id
 	private Long id;
 
+	@JsonIgnore
 	private long user;
 
 	@Enumerated(EnumType.STRING)

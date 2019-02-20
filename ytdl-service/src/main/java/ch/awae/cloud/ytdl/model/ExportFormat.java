@@ -28,6 +28,8 @@ public class ExportFormat {
 	
 	private String suffix;
 	
+	private boolean raw;
+	
 	@Enumerated(EnumType.STRING)
 	private FileCategory category;
 	

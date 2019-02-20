@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-ytdl',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class YtdlComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    if (this.route.firstChild == null) {
+      this.router.navigate(['ytdl/list'])
+    }
   }
 
 }
