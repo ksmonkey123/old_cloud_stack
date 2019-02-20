@@ -5,9 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -48,13 +46,11 @@ public class Job {
 	private String url;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "ytdl_job_files", joinColumns = @JoinColumn(name = "job_id"), inverseJoinColumns = @JoinColumn(name = "file_id"))
+	@JoinTable(name = "ytdl_job_file_assoc", joinColumns = @JoinColumn(name = "job_id"), inverseJoinColumns = @JoinColumn(name = "file_id"))
 	private List<OutputFile> files;
 
-	@ElementCollection(targetClass = ExportFormat.class)
-	@Enumerated(EnumType.STRING)
-	@CollectionTable(name = "ytdl_job_formats")
-	@Column(name = "format")
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "ytdl_job_format_assoc", joinColumns = @JoinColumn(name = "job_id"), inverseJoinColumns = @JoinColumn(name = "format_id"))
 	private List<ExportFormat> formats;
 
 	public Job(long user, String url, ExportFormat... format) {

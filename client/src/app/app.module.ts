@@ -26,6 +26,7 @@ import { UserAdminComponent } from './admin/user-admin/user-admin.component';
 import { CreateUserComponent } from './admin/create-user/create-user.component';
 import { NetcodeComponent } from './netcode/netcode.component';
 import { NetcodeService } from './netcode/netcode.service';
+import { YtdlComponent } from './ytdl/ytdl.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { NetcodeService } from './netcode/netcode.service';
     AdminComponent,
     UserAdminComponent,
     CreateUserComponent,
-    NetcodeComponent
+    NetcodeComponent,
+    YtdlComponent
   ],
   imports: [
     BrowserModule,
