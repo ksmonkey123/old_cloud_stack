@@ -1,9 +1,11 @@
-package ch.awae.cloud.ytdl;
+package ch.awae.cloud.ytdl.model;
 
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,6 +34,11 @@ public class OutputFile {
 	private String path;
 
 	private long size;
+	
+	private String source;
+	
+	@Enumerated(EnumType.STRING)
+	private ExportFormat format;
 	
 	public OutputFile(String path, long size) {
 		this.path = path;

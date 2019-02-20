@@ -1,26 +1,28 @@
-package ch.awae.cloud.ytdl;
+package ch.awae.cloud.ytdl.model;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.val;
 
 @Getter
 @Setter
@@ -45,32 +47,21 @@ public class Job {
 
 	private String url;
 
-	@ManyToOne
-	private OutputFile file;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "ytdl_job_files", joinColumns = @JoinColumn(name = "job_id"), inverseJoinColumns = @JoinColumn(name = "file_id"))
+	private List<OutputFile> files;
 
+	@ElementCollection(targetClass = ExportFormat.class)
 	@Enumerated(EnumType.STRING)
-	private ExportFormat format;
+	@CollectionTable(name = "ytdl_job_formats")
+	@Column(name = "format")
+	private List<ExportFormat> formats;
 
-	public Job(long user, String url, ExportFormat format) {
+	public Job(long user, String url, ExportFormat... format) {
 		this.user = user;
 		this.status = JobStatus.PENDING;
-		this.format = format;
+		this.formats = Arrays.asList(format);
 		this.created = new Timestamp(System.currentTimeMillis());
 		this.url = url;
 	}
-}
-
-interface JobRepository extends JpaRepository<Job, Long> {
-
-	List<Job> findByUserOrderByCreatedAsc(long user);
-
-	List<Job> findByUrlAndStatus(String url, JobStatus status);
-
-	default Optional<Job> findCompleted(String url) {
-		val list = findByUrlAndStatus(url, JobStatus.DONE);
-		if (list.isEmpty())
-			return Optional.empty();
-		return Optional.of(list.get(0));
-	}
-
 }

@@ -1,4 +1,4 @@
-package ch.awae.cloud.ytdl;
+package ch.awae.cloud.ytdl.model;
 
 public enum JobStatus {
 
