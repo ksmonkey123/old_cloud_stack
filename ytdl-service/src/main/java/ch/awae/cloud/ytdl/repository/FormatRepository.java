@@ -15,4 +15,6 @@ public interface FormatRepository extends Repository<ExportFormat, Long> {
 	
 	List<ExportFormat> findAllById(Iterable<Long> ids);
 	
+	ExportFormat findByName(String name);
+	
 }

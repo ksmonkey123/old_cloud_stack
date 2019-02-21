@@ -3,3 +3,5 @@ org.eclipse.m2e.core.prefs
 elite-service/dump.json
 elite-service/load.sql
 /client/dist/out-tsc
+ytdl-service/out
+ytdl-service/tempY
