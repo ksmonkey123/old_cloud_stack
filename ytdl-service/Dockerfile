@@ -2,6 +2,7 @@ FROM java:8-jre
 
 RUN apt-get update
 RUN apt-get install -y ffmpeg
+RUN apt-get install -y python
 RUN wget https://yt-dl.org/downloads/latest/youtube-dl -O /bin/youtube-dl
 RUN chmod 777 /bin/youtube-dl
 
