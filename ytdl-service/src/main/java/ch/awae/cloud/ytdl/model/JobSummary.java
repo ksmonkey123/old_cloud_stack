@@ -37,5 +37,8 @@ public class JobSummary {
 	private int formats;
 
 	private int files;
-	
+
+	@Column(name = "format_list")
+	private String formatList;
+
 }

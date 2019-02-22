@@ -1,5 +1,6 @@
 package ch.awae.cloud.ytdl.services;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,7 +25,9 @@ public class DownloadService {
 	}
 
 	public Optional<String> downloadFile(String url, String identifier) throws IOException, InterruptedException {
-		exec.exec(binPath, "-o", tempFile + "/" + identifier + "/%(title)s.%(ext)s", url);
+		File f = new File(tempFile + "/" + identifier + "/");
+		f.mkdirs();
+		exec.execInDirectory(f, binPath, url);
 		try (Stream<Path> paths = Files.walk(Paths.get(tempFile + "/" + identifier))) {
 			return paths.filter(Files::isRegularFile).findFirst().map(Object::toString);
 		}

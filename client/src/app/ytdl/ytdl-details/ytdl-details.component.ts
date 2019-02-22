@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { YtdlService } from '../ytdl.service';
 
 @Component({
   selector: 'app-ytdl-details',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class YtdlDetailsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private route: ActivatedRoute,
+    private service: YtdlService
+  ) { }
 
   ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      var jobId = Number.parseInt(params.get('id'));
+      console.log('jobId: ' + jobId);
+    });
   }
 
 }

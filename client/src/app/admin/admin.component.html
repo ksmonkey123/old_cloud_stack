@@ -26,8 +26,9 @@
 
 <button type="button" class="btn btn-success" [routerLink]="['/admin/createUser']">New User</button>
 
-<div *ngIf="busy" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%">&nbsp;</div>
-
+<div *ngIf="busy" class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%">&nbsp;</div>
+</div>
 <hr/>
 
 <router-outlet></router-outlet>

@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { YtdlService } from '../ytdl.service';
 import { Format, FormatListEntry, JobSummary } from '../ytdl.model';
 import { RootComponent } from 'src/app/root/root.component';
+import { NgStyle } from '@angular/common';
 
 @Component({
   selector: 'app-ytdl-list',
@@ -56,6 +57,28 @@ export class YtdlListComponent implements OnInit, OnDestroy {
       case 'CONVERTING': return 'primary';
       case 'FAILED': return 'danger';
       case 'DONE': return 'success';
+    }
+  }
+
+  getProgressBarClass(job: JobSummary) : string {
+    switch(job.status) {
+      case 'PENDING': return 'progress-bar-striped progress-bar-animated bg-secondary';
+      case 'CONVERTING':
+      case 'DOWNLOADING': return 'progress-bar-striped progress-bar-animated bg-primary';
+      case 'FAILED': return 'bg-danger';
+      case 'DONE': return 'bg-success';
+    }
+  }
+
+  getProgressBarStyle(job: JobSummary) {
+    switch(job.status) {
+      case 'PENDING':
+      case 'DONE':
+      case 'FAILED':
+      return {width: '100%'};
+      case 'CONVERTING':
+      case 'DOWNLOADING':
+      return {width: (100 * (1 + job.files) / (job.formats)).toFixed(0) + '%'}
     }
   }
 

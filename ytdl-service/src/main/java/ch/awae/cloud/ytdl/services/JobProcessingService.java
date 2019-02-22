@@ -3,7 +3,9 @@ package ch.awae.cloud.ytdl.services;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ch.awae.cloud.ytdl.model.ExportFormat;
@@ -23,7 +25,7 @@ public class JobProcessingService {
 	private ConverterService converterService;
 	private JobRepository repository;
 
-	//@Scheduled(fixedRateString = "${ytdl.processor.interval}")
+	@Scheduled(fixedRateString = "${ytdl.processor.interval}")
 	public void run() {
 		cleanupBrokenJobs();
 		performOneJob();
@@ -47,7 +49,7 @@ public class JobProcessingService {
 				System.out.println("starting conversion to " + format.getName());
 				T2<String, Long> fileInfo = converterService.convertFile(tempFile, identifier, format).get();
 				// TODO: determine file size
-				OutputFile file = new OutputFile(fileInfo._1, fileInfo._2, job.getUrl(), format);
+				OutputFile file = new OutputFile(fileInfo._1, fileInfo._2, job.getUrl(), format, UUID.randomUUID().toString());
 				job.getFiles().add(file);
 				job = repository.save(job);
 			}

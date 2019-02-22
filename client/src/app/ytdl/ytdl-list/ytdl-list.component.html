@@ -8,7 +8,7 @@
             <b>{{e.category}}</b>
             <ul class="list-inline">
                 <li class="list-inline-item" *ngFor="let f of e.formats">
-                    <input type="checkbox" [(ngModel)]="model.formats[f.id]" /> {{f.name}}</li>
+                    <input type="checkbox" [(ngModel)]="model.formats[f.id]" />{{f.name}}</li>
             </ul>
         </td>
     </tr>
@@ -19,22 +19,21 @@
 <div *ngFor="let job of jobs" class="infocard">
     <!-- PENDING CARD -->
     <div class="card" [ngClass]="'border-'+getClassForStatus(job.status)">
-        <div class="card-header text-white" [ngClass]="'bg-'+getClassForStatus(job.status)">Job #{{job.id}}:
-            {{job.status}}</div>
+        <div class="card-header text-white" [ngClass]="'bg-'+getClassForStatus(job.status)">
+            <a [routerLink]="['/ytdl/job', job.id]" class='text-white'>Job #{{job.id}}: {{job.status}}</a></div>
         <div class="card-body" [ngClass]="'text-'+getClassForStatus(job.status)">
-            <p class="card-text">{{job.url}}</p>
+            <p class="card-text">{{job.url}} ({{job.formatList}})
+                <span *ngIf="job.status == 'CONVERTING'">
+                    <br/><br/>
+                    converting into format {{job.files + 1}} / {{job.formats}}
+                </span>
+            </p>
 
             <div class="progress">
-                    <div *ngIf="job.status=='PENDING'"
-                    class="progress-bar progress-bar-striped progress-bar-animated bg-secondary" style="width: 100%"></div>
-                    <div *ngIf="job.status=='DONE'"
-                    class="progress-bar bg-success" style="width: 100%"></div>
-                    <div *ngIf="job.status=='FAILED'"
-                    class="progress-bar bg-danger" style="width: 100%"></div>
-                    <div *ngIf="job.status=='DOWNLOADING'||job.status=='CONVERTING'"
-                    class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 100%"></div>
-                    
+                <div class="progress-bar" [ngClass]="getProgressBarClass(job)" [ngStyle]="getProgressBarStyle(job)">
+                </div>
             </div>
+
         </div>
     </div>
 </div>

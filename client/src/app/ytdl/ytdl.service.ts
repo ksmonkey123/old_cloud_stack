@@ -10,7 +10,8 @@ export class YtdlService {
   private urls = {
     list: "/api/ytdl/list",
     formats: "/api/ytdl/formats",
-    addJob: "/api/ytdl/job"
+    addJob: "/api/ytdl/job",
+    jobDetails: (id: number) => `/api/ytdl/job/${id}`
   }
 
   constructor(private http: HttpClient) { }

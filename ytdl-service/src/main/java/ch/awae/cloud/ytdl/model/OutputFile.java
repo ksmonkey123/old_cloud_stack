@@ -35,15 +35,18 @@ public class OutputFile {
 	private long size;
 
 	private String source;
+	
+	private String uuid;
 
 	@ManyToOne
 	private ExportFormat format;
 
-	public OutputFile(String path, long size, String source, ExportFormat format) {
+	public OutputFile(String path, long size, String source, ExportFormat format, String uuid) {
 		this.path = path;
 		this.size = size;
 		this.source = source;
 		this.format = format;
+		this.uuid = uuid;
 		this.created = new Timestamp(System.currentTimeMillis());
 	}
 
