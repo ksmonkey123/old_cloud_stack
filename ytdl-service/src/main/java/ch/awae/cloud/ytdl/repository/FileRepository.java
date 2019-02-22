@@ -14,4 +14,6 @@ public interface FileRepository extends JpaRepository<OutputFile, Long> {
 
 	List<OutputFile> findByIdNotIn(List<Long> ids);
 	
+	Optional<OutputFile> findByUuid(String uuid);
+	
 }
