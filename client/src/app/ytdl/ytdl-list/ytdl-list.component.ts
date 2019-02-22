@@ -49,6 +49,16 @@ export class YtdlListComponent implements OnInit, OnDestroy {
     this.service.getJobList().subscribe(jobs => this.jobs = jobs)
   }
 
+  getClassForStatus(status: string) {
+    switch (status) {
+      case 'PENDING': return 'secondary';
+      case 'DOWNLOADING': return 'primary';
+      case 'CONVERTING': return 'primary';
+      case 'FAILED': return 'danger';
+      case 'DONE': return 'success';
+    }
+  }
+
 }
 
 class AddJobFormModel {

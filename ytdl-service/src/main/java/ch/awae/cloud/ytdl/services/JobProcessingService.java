@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import ch.awae.cloud.ytdl.model.ExportFormat;
@@ -24,7 +23,7 @@ public class JobProcessingService {
 	private ConverterService converterService;
 	private JobRepository repository;
 
-	@Scheduled(fixedRateString = "${ytdl.processor.interval}")
+	//@Scheduled(fixedRateString = "${ytdl.processor.interval}")
 	public void run() {
 		cleanupBrokenJobs();
 		performOneJob();

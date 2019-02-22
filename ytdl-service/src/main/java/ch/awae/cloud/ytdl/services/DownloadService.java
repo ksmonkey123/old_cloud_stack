@@ -13,23 +13,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class DownloadService {
 
-	private String tempFile;
+	private String tempFile, binPath;
+	private ExecService exec;
 
-	public DownloadService(@Value("${ytdl.filesystem.temp}") String tempFile) {
+	public DownloadService(ExecService exec, @Value("${ytdl.filesystem.temp}") String tempFile,
+			@Value("${ytdl.youtube-dl}") String binPath) {
 		this.tempFile = tempFile;
+		this.binPath = binPath;
+		this.exec = exec;
 	}
 
 	public Optional<String> downloadFile(String url, String identifier) throws IOException, InterruptedException {
-		String[] command = { "/usr/local/bin/youtube-dl", "-o", tempFile + "/" + identifier + "/%(title)s.%(ext)s", url };
-		Runtime.getRuntime().exec(command).waitFor();
+		exec.exec(binPath, "-o", tempFile + "/" + identifier + "/%(title)s.%(ext)s", url);
 		try (Stream<Path> paths = Files.walk(Paths.get(tempFile + "/" + identifier))) {
 			return paths.filter(Files::isRegularFile).findFirst().map(Object::toString);
 		}
 	}
 
 	public void deleteTempFolder(String identifier) throws InterruptedException, IOException {
-		String[] command = { "rm", "-r", tempFile + "/" + identifier };
-		Runtime.getRuntime().exec(command).waitFor();
+		exec.exec("rm", "-r", tempFile + "/" + identifier);
 	}
 
 }

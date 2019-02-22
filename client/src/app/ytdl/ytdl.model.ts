@@ -10,7 +10,7 @@ export interface JobSummary {
     status: string;
     url: string;
     formats: number;
-    files: number;   
+    files: number;
 }
 
 export interface FormatListEntry {
