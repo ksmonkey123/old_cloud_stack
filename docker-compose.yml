@@ -54,4 +54,7 @@ services:
     build: ytdl-service
     image: ch.awae/ytdl-service
     restart: always
+    volumes:
+      - ../cloud-files/ytdl/tmp:/temp
+      - ../cloud-files/ytdl/out:/out
     

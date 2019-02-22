@@ -6,6 +6,12 @@ RUN apt-get install -y python
 RUN wget https://yt-dl.org/downloads/latest/youtube-dl -O /bin/youtube-dl
 RUN chmod 777 /bin/youtube-dl
 
+MKDIR /temp
+MKDIR /out
+
+VOLUME /temp
+VOLUME /out
+
 ADD ./target/ytdl-service.jar /app/
 CMD ["java", "-Xmx200m", "-jar", "/app/ytdl-service.jar"]
 
