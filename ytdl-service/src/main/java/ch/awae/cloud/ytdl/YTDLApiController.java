@@ -10,10 +10,12 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.awae.cloud.exception.ResourceNotFoundException;
 import ch.awae.cloud.security.Security;
 import ch.awae.cloud.ytdl.model.ExportFormat;
 import ch.awae.cloud.ytdl.model.FileCategory;
@@ -49,16 +51,23 @@ public class YTDLApiController {
 		}
 		return list;
 	}
-	
+
 	@Secured("ROLE_YTDL")
 	@PostMapping("/job")
 	public void postJob(@Valid @RequestBody PostJobRequest request) {
 		val formats = formatRepo.findAllById(Arrays.asList(request.getFormats()));
 		val formatArray = formats.toArray(new ExportFormat[0]);
-		
+
 		jobRepo.save(new Job(Security.getUserId(), request.getUrl(), formatArray));
 	}
-	
+
+	@Secured("ROLE_YTDL")
+	@GetMapping("/job/{jobId}")
+	public Job getJobDetails(@PathVariable("jobId") long jobId) {
+		return jobRepo.findByIdAndUser(jobId, Security.getUserId())
+				.orElseThrow(() -> new ResourceNotFoundException("job", "id", jobId));
+	}
+
 }
 
 @Data
