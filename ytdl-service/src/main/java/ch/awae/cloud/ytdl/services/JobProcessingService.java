@@ -32,7 +32,7 @@ public class JobProcessingService {
 	}
 
 	private void performOneJob() {
-		val maybeJob = repository.findOneByStatusOrderByCreatedAsc(JobStatus.PENDING);
+		val maybeJob = repository.findFirstByStatusOrderByCreatedAsc(JobStatus.PENDING);
 		if (!maybeJob.isPresent())
 			return;
 		Job job = maybeJob.get();
