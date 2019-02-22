@@ -40,7 +40,7 @@ public class ConverterService {
 		try (Stream<Path> paths = Files.walk(Paths.get(outFile + "/" + identifier))) {
 			Optional<Path> path = paths.filter(Files::isRegularFile)
 					.filter(f -> f.getFileName().toString().endsWith(format.getSuffix())).findFirst();
-			return path.map(p -> T2.of(identifier + "/" + p.getFileName().toString(), p.toFile().length()));
+			return path.map(p -> T2.of(p.getFileName().toString(), p.toFile().length()));
 		}
 	}
 

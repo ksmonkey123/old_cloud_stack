@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { Format, JobSummary, FormatListEntry } from './ytdl.model';
+import { Format, JobSummary, FormatListEntry, JobDetails } from './ytdl.model';
 
 @Injectable()
 export class YtdlService {
@@ -26,6 +26,10 @@ export class YtdlService {
 
   getJobList(): Observable<JobSummary[]> {
     return this.http.get<JobSummary[]>(this.urls.list);
+  }
+
+  getJobDetails(jobId: number): Observable<JobDetails> {
+    return this.http.get<JobDetails>(this.urls.jobDetails(jobId));
   }
 
 }

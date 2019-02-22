@@ -30,22 +30,25 @@ public class OutputFile {
 	@Column(name = "cre_dat", nullable = false, updatable = false)
 	private Timestamp created;
 
-	private String path;
+	private String name;
 
 	private long size;
 
 	private String source;
+	
+	private String identifier;
 	
 	private String uuid;
 
 	@ManyToOne
 	private ExportFormat format;
 
-	public OutputFile(String path, long size, String source, ExportFormat format, String uuid) {
-		this.path = path;
+	public OutputFile(String name, long size, String source, ExportFormat format, String uuid, String identifier) {
+		this.name = name;
 		this.size = size;
 		this.source = source;
 		this.format = format;
+		this.identifier = identifier;
 		this.uuid = uuid;
 		this.created = new Timestamp(System.currentTimeMillis());
 	}

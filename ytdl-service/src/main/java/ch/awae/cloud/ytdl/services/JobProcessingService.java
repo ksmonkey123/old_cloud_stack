@@ -48,8 +48,7 @@ public class JobProcessingService {
 			for (ExportFormat format : formats) {
 				System.out.println("starting conversion to " + format.getName());
 				T2<String, Long> fileInfo = converterService.convertFile(tempFile, identifier, format).get();
-				// TODO: determine file size
-				OutputFile file = new OutputFile(fileInfo._1, fileInfo._2, job.getUrl(), format, UUID.randomUUID().toString());
+				OutputFile file = new OutputFile(fileInfo._1, fileInfo._2, job.getUrl(), format, UUID.randomUUID().toString(), identifier);
 				job.getFiles().add(file);
 				job = repository.save(job);
 			}

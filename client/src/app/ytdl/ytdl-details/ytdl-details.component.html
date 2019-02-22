@@ -1,3 +1,30 @@
-<p>
-  ytdl-details works!
-</p>
+<hr />
+<div class="card" [ngClass]="'border-'+getClassForStatus(job.status)">
+  <div class="card-header text-white" [ngClass]="'bg-'+getClassForStatus(job.status)">
+    <h2>Job #{{job.id}}: {{job.status}}</h2>
+  </div>
+  <div class="card-body card-text">
+    <h3>URL</h3>
+    <ul>
+      <li>{{job.url}}</li>
+    </ul>
+    <h3>Files</h3>
+    <ul>
+      <li *ngFor="let file of job.files">{{file.path}}</li>
+    </ul>
+    <span *ngIf="job.status == 'CONVERTING'">
+      <h3>Progress</h3>
+      <ul>
+        <li>converting into format {{job.files + 1}} / {{job.formats}}</li>
+      </ul>
+    </span>
+
+    <div class="progress">
+      <div class="progress-bar" [ngClass]="getProgressBarClass(job)" [ngStyle]="getProgressBarStyle(job)">
+      </div>
+    </div>
+
+  </div>
+</div>
+<hr />
+<button class="btn btn-primary" [routerLink]="['/ytdl/list']">&lt; Back to List</button>

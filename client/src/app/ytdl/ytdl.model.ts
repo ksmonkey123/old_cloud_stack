@@ -23,7 +23,7 @@ export interface OutputFile {
     id: number;
     size: number;
     format: Format;
-    
+    path: string;
 }
 
 export interface JobDetails {

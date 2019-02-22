@@ -60,8 +60,8 @@ export class YtdlListComponent implements OnInit, OnDestroy {
     }
   }
 
-  getProgressBarClass(job: JobSummary) : string {
-    switch(job.status) {
+  getProgressBarClass(job: JobSummary): string {
+    switch (job.status) {
       case 'PENDING': return 'progress-bar-striped progress-bar-animated bg-secondary';
       case 'CONVERTING':
       case 'DOWNLOADING': return 'progress-bar-striped progress-bar-animated bg-primary';
@@ -71,14 +71,15 @@ export class YtdlListComponent implements OnInit, OnDestroy {
   }
 
   getProgressBarStyle(job: JobSummary) {
-    switch(job.status) {
+    switch (job.status) {
       case 'PENDING':
       case 'DONE':
       case 'FAILED':
-      return {width: '100%'};
+        return { width: '100%' };
       case 'CONVERTING':
+        return { width: (100 * (job.files + 1) / (job.formats + 1)).toFixed(0) + '%' }
       case 'DOWNLOADING':
-      return {width: (100 * (1 + job.files) / (job.formats)).toFixed(0) + '%'}
+        return { width: (100 / (job.formats + 1)).toFixed(0) + '%' }
     }
   }
 
