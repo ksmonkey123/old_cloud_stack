@@ -20,14 +20,14 @@ public class DownloadService {
 	}
 
 	public Optional<String> downloadFile(String url, String identifier) throws IOException, InterruptedException {
-		String[] command = { "youtube-dl", "-o", tempFile + "/" + identifier + "/%(title)s.%(ext)s", url };
+		String[] command = { "/usr/local/bin/youtube-dl", "-o", tempFile + "/" + identifier + "/%(title)s.%(ext)s", url };
 		Runtime.getRuntime().exec(command).waitFor();
 		try (Stream<Path> paths = Files.walk(Paths.get(tempFile + "/" + identifier))) {
 			return paths.filter(Files::isRegularFile).findFirst().map(Object::toString);
 		}
 	}
 
-	public void deleteTempFile(String identifier) throws InterruptedException, IOException {
+	public void deleteTempFolder(String identifier) throws InterruptedException, IOException {
 		String[] command = { "rm", "-r", tempFile + "/" + identifier };
 		Runtime.getRuntime().exec(command).waitFor();
 	}

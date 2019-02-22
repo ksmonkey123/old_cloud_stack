@@ -17,6 +17,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,10 +49,12 @@ public class Job {
 	private String url;
 
 	@ManyToMany(cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name = "ytdl_job_file_assoc", joinColumns = @JoinColumn(name = "job_id"), inverseJoinColumns = @JoinColumn(name = "file_id"))
 	private List<OutputFile> files;
 
 	@ManyToMany(cascade = CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name = "ytdl_job_format_assoc", joinColumns = @JoinColumn(name = "job_id"), inverseJoinColumns = @JoinColumn(name = "format_id"))
 	private List<ExportFormat> formats;
 

@@ -39,9 +39,11 @@ public class OutputFile {
 	@ManyToOne
 	private ExportFormat format;
 
-	public OutputFile(String path, long size) {
+	public OutputFile(String path, long size, String source, ExportFormat format) {
 		this.path = path;
 		this.size = size;
+		this.source = source;
+		this.format = format;
 		this.created = new Timestamp(System.currentTimeMillis());
 	}
 

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import ch.awae.cloud.ytdl.model.ExportFormat;
+import ch.awae.utils.functional.T2;
 
 @Service
 public class ConverterService {
@@ -22,7 +23,7 @@ public class ConverterService {
 		this.outFile = outFile;
 	}
 
-	public Optional<String> convertFile(String file, String identifier, ExportFormat format)
+	public Optional<T2<String, Long>> convertFile(String file, String identifier, ExportFormat format)
 			throws InterruptedException, IOException {
 		new File(outFile + "/" + identifier + "/").mkdirs();
 
@@ -32,9 +33,9 @@ public class ConverterService {
 			runFFMPEG(file, identifier, format);
 
 		try (Stream<Path> paths = Files.walk(Paths.get(outFile + "/" + identifier))) {
-			return paths.filter(Files::isRegularFile)
-					.filter(f -> f.getFileName().toString().endsWith(format.getSuffix())).findFirst()
-					.map(Object::toString);
+			Optional<Path> path = paths.filter(Files::isRegularFile)
+					.filter(f -> f.getFileName().toString().endsWith(format.getSuffix())).findFirst();
+			return path.map(p -> T2.of(identifier + "/" + p.getFileName().toString(), p.toFile().length()));
 		}
 	}
 
@@ -48,7 +49,8 @@ public class ConverterService {
 		System.out.println("ffmpeg");
 		String[] fileParts = file.split("/");
 		String filename = fileParts[fileParts.length - 1];
-		String[] command = { "ffmpeg", "-y", "-i", file, outFile + "/" + identifier + "/" + filename + format.getSuffix() };
+		String[] command = { "/usr/local/bin/ffmpeg", "-y", "-i", file,
+				outFile + "/" + identifier + "/" + filename + format.getSuffix() };
 		Runtime.getRuntime().exec(command).waitFor();
 	}
 
