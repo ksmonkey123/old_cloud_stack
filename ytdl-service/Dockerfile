@@ -6,8 +6,8 @@ RUN apt-get install -y python
 RUN wget https://yt-dl.org/downloads/latest/youtube-dl -O /bin/youtube-dl
 RUN chmod 777 /bin/youtube-dl
 
-MKDIR /temp
-MKDIR /out
+RUN mkdir /temp
+RUN mkdir /out
 
 VOLUME /temp
 VOLUME /out
