@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +27,7 @@ public class OutputFile {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Setter(AccessLevel.NONE)
+	@JsonIgnore
 	private Long id;
 
 	@Column(name = "cre_dat", nullable = false, updatable = false)
@@ -36,6 +39,7 @@ public class OutputFile {
 
 	private String source;
 	
+	@JsonIgnore
 	private String identifier;
 	
 	private String uuid;
