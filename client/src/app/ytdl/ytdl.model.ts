@@ -5,7 +5,12 @@ export interface Format {
     category: string;
 }
 
-export interface JobSummary {
+export interface JobBase {
+    id: number;
+    status: string;
+}
+
+export interface JobSummary extends JobBase {
     id: number;
     status: string;
     url: string;
@@ -27,7 +32,7 @@ export interface OutputFile {
     path: string;
 }
 
-export interface JobDetails {
+export interface JobDetails extends JobBase {
     id: number;
     status: string;
     url: string;

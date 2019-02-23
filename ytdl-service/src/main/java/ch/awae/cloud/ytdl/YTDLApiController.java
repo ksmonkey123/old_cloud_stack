@@ -1,5 +1,6 @@
 package ch.awae.cloud.ytdl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,21 +10,26 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import ch.awae.cloud.exception.BadRequestException;
 import ch.awae.cloud.exception.ResourceNotFoundException;
 import ch.awae.cloud.security.Security;
 import ch.awae.cloud.ytdl.model.ExportFormat;
 import ch.awae.cloud.ytdl.model.FileCategory;
 import ch.awae.cloud.ytdl.model.Job;
+import ch.awae.cloud.ytdl.model.JobStatus;
 import ch.awae.cloud.ytdl.model.JobSummary;
+import ch.awae.cloud.ytdl.model.OutputFile;
 import ch.awae.cloud.ytdl.repository.FormatRepository;
 import ch.awae.cloud.ytdl.repository.JobRepository;
 import ch.awae.cloud.ytdl.repository.JobSummaryRepository;
+import ch.awae.cloud.ytdl.services.FileStorageService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.val;
@@ -35,6 +41,7 @@ public class YTDLApiController {
 	private JobRepository jobRepo;
 	private JobSummaryRepository jobSummaryRepo;
 	private FormatRepository formatRepo;
+	private FileStorageService storageService;
 
 	@Secured("ROLE_YTDL")
 	@GetMapping("/list")
@@ -66,6 +73,38 @@ public class YTDLApiController {
 	public Job getJobDetails(@PathVariable("jobId") long jobId) {
 		return jobRepo.findByIdAndUser(jobId, Security.getUserId())
 				.orElseThrow(() -> new ResourceNotFoundException("job", "id", jobId));
+	}
+
+	@Secured("ROLE_YTDL")
+	@DeleteMapping("/job/{jobId}")
+	public void deleteJob(@PathVariable("jobId") long jobId) {
+		Job job;
+		synchronized (jobRepo) {
+			job = jobRepo.findByIdAndUser(jobId, Security.getUserId())
+					.orElseThrow(() -> new ResourceNotFoundException("job", "id", jobId));
+			if (job.getStatus() == JobStatus.DOWNLOADING || job.getStatus() == JobStatus.CONVERTING)
+				throw new BadRequestException("cannot delete job that is currently being processed!");
+			// DELETE FILES IF APPLICABLE
+			for (OutputFile f : job.getFiles()) {
+				try {
+					storageService.deleteFilesByIdentifier(f.getIdentifier());
+				} catch (InterruptedException | IOException e) {
+					System.err.println(e.toString());
+					e.printStackTrace();
+				}
+			}
+			// DELETE JOB
+			jobRepo.delete(job);
+		}
+	}
+
+	@Secured("ROLE_YTDL")
+	@PostMapping("/job/{jobId}/retry")
+	public void retryJob(@PathVariable("jobId") long jobId) {
+		Job job = jobRepo.findByIdAndUserAndStatus(jobId, Security.getUserId(), JobStatus.FAILED)
+				.orElseThrow(() -> new ResourceNotFoundException("job", "id", jobId));
+		job.setStatus(JobStatus.PENDING);
+		jobRepo.save(job);
 	}
 
 }

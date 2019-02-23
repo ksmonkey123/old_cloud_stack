@@ -11,7 +11,8 @@ export class YtdlService {
     list: "/api/ytdl/list",
     formats: "/api/ytdl/formats",
     addJob: "/api/ytdl/job",
-    jobDetails: (id: number) => `/api/ytdl/job/${id}`
+    jobDetails: (id: number) => `/api/ytdl/job/${id}`,
+    retryJob: (id: number) => `/api/ytdl/job/${id}/retry`
   }
 
   constructor(private http: HttpClient) { }
@@ -30,6 +31,14 @@ export class YtdlService {
 
   getJobDetails(jobId: number): Observable<JobDetails> {
     return this.http.get<JobDetails>(this.urls.jobDetails(jobId));
+  }
+
+  deleteJob(jobId: number): Observable<boolean> {
+    return this.http.delete<any>(this.urls.jobDetails(jobId)).pipe(map(x => true));
+  }
+
+  retryJob(jobId: number): Observable<boolean> {
+    return this.http.post<any>(this.urls.retryJob(jobId), []).pipe(map(x => true));
   }
 
 }

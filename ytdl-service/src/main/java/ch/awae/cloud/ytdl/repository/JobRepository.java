@@ -17,5 +17,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 	Optional<Job> findFirstByStatusOrderByCreatedAsc(JobStatus status);
 	
 	Optional<Job> findByIdAndUser(long id, long user);
+	
+	Optional<Job> findByIdAndUserAndStatus(long id, long user, JobStatus status);
 
 }

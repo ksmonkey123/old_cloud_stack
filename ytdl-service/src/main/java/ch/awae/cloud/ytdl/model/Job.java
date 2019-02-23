@@ -2,6 +2,7 @@ package ch.awae.cloud.ytdl.model;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.LazyCollection;
@@ -50,12 +52,12 @@ public class Job {
 	
 	private String name;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy="job")
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@JoinTable(name = "ytdl_job_file_assoc", joinColumns = @JoinColumn(name = "job_id"), inverseJoinColumns = @JoinColumn(name = "file_id"))
+	@Setter(AccessLevel.NONE)
 	private List<OutputFile> files;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@JoinTable(name = "ytdl_job_format_assoc", joinColumns = @JoinColumn(name = "job_id"), inverseJoinColumns = @JoinColumn(name = "format_id"))
 	private List<ExportFormat> formats;
@@ -67,4 +69,14 @@ public class Job {
 		this.created = new Timestamp(System.currentTimeMillis());
 		this.url = url;
 	}
+	
+	public void addFile(OutputFile file) {
+		this.files.add(file);
+		file.setJob(this);
+	}
+	
+	public List<OutputFile> getFiles() {
+		return Collections.unmodifiableList(this.files);
+	}
+	
 }

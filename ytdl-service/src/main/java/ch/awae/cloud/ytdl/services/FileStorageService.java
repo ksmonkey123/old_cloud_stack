@@ -1,5 +1,6 @@
 package ch.awae.cloud.ytdl.services;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -19,8 +20,8 @@ public class FileStorageService {
 	@Value("${ytdl.filesystem.out}")
 	private String outFile;
 
-	@Autowired
-	private FileRepository repo;
+	private @Autowired FileRepository repo;
+	private @Autowired ExecService exec;
 
 	public Resource getFileByUUID(String uuid) {
 		OutputFile file = repo.findByUuid(uuid).orElseThrow(() -> new ResourceNotFoundException("file", "uuid", uuid));
@@ -34,6 +35,10 @@ public class FileStorageService {
 		} catch (Exception e) {
 			throw new ResourceNotFoundException("file", "uuid", uuid);
 		}
+	}
+
+	public void deleteFilesByIdentifier(String identifier) throws InterruptedException, IOException {
+		exec.exec("rm", "-rv", outFile + "/" + identifier);
 	}
 
 }

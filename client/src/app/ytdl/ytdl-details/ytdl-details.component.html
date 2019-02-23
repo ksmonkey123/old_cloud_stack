@@ -7,7 +7,8 @@
 
     <h3>URL</h3>
     <ul>
-      <li><a [attr.href]="job.url" target="_blank">{{job.url}}</a><span *ngIf="job.name != null">&nbsp;({{job.name}})</span>
+      <li><a [attr.href]="job.url" target="_blank">{{job.url}}</a><span
+          *ngIf="job.name != null">&nbsp;- {{job.name}}</span>
       </li>
     </ul>
     <span *ngIf="job.files.length != 0">

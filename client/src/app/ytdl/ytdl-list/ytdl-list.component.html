@@ -13,17 +13,27 @@
         </td>
     </tr>
 </table>
-<button class="btn btn-success" (click)="onAdd()">Download</button>
+<button class="btn btn-primary" (click)="onAdd()">Download</button>
 <hr />
 
 <div *ngFor="let job of jobs" class="infocard">
     <!-- PENDING CARD -->
     <div class="card" [ngClass]="'border-'+getClassForStatus(job.status)">
         <div class="card-header text-white" [ngClass]="'bg-'+getClassForStatus(job.status)">
-            <a [routerLink]="['/ytdl/job', job.id]" class='text-white'>Job #{{job.id}}: {{job.status.toLowerCase()}}<span
-            *ngIf="job.name != null">&nbsp;({{job.name}})</span></a></div>
+            <a [routerLink]="['/ytdl/job', job.id]" class='text-white'>Job #{{job.id}}:
+                {{job.status.toLowerCase()}}<span *ngIf="job.name != null">&nbsp;- {{job.name}}</span></a>
+
+        </div>
         <div class="card-body" [ngClass]="'text-'+getClassForStatus(job.status)">
-            <p class="card-text">{{job.url}} ({{job.formatList}})</p>
+            <p class="card-text">{{job.url}} ({{job.formatList}})
+                <span class="float-right">
+                        <button *ngIf="job.status == 'FAILED'" class="btn btn-primary btn-retry"
+                        (click)="retryJob(job)">Retry</button>
+                    <button *ngIf="job.status != 'CONVERTING' && job.status != 'DOWNLOADING'" class="btn btn-danger"
+                        (click)="deleteJob(job)">Delete</button>
+                </span>
+                <br /><br />
+            </p>
             <div class="progress">
                 <div class="progress-bar" [ngClass]="getProgressBarClass(job)" [ngStyle]="getProgressBarStyle(job)">
                 </div>

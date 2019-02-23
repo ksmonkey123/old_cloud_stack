@@ -32,14 +32,19 @@ public class JobProcessingService {
 	}
 
 	private void performOneJob() {
-		val maybeJob = repository.findFirstByStatusOrderByCreatedAsc(JobStatus.PENDING);
-		if (!maybeJob.isPresent())
-			return;
-		Job job = maybeJob.get();
-		ExportFormat[] formats = job.getFormats().toArray(new ExportFormat[0]);
-		String identifier = Long.toString(System.currentTimeMillis());
-		job.setStatus(JobStatus.DOWNLOADING);
-		repository.save(job);
+		Job job;
+		String identifier;
+		ExportFormat[] formats;
+		synchronized (repository) {
+			val maybeJob = repository.findFirstByStatusOrderByCreatedAsc(JobStatus.PENDING);
+			if (!maybeJob.isPresent())
+				return;
+			job = maybeJob.get();
+			formats = job.getFormats().toArray(new ExportFormat[0]);
+			identifier = Long.toString(System.currentTimeMillis());
+			job.setStatus(JobStatus.DOWNLOADING);
+			job = repository.saveAndFlush(job);
+		}
 		try {
 			System.out.println("starting download");
 			String tempFile = downloadService.downloadFile(job.getUrl(), identifier).get();
@@ -49,8 +54,9 @@ public class JobProcessingService {
 			for (ExportFormat format : formats) {
 				System.out.println("starting conversion to " + format.getName());
 				T2<String, Long> fileInfo = converterService.convertFile(tempFile, identifier, format).get();
-				OutputFile file = new OutputFile(fileInfo._1, fileInfo._2, job.getUrl(), format, UUID.randomUUID().toString(), identifier);
-				job.getFiles().add(file);
+				OutputFile file = new OutputFile(fileInfo._1, fileInfo._2, job.getUrl(), format,
+						UUID.randomUUID().toString(), identifier);
+				job.addFile(file);
 				job = repository.save(job);
 			}
 			job.setStatus(JobStatus.DONE);

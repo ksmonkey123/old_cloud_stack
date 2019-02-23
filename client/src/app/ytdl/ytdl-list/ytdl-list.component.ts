@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { YtdlService } from '../ytdl.service';
-import { Format, FormatListEntry, JobSummary } from '../ytdl.model';
+import { Format, FormatListEntry, JobSummary, JobBase } from '../ytdl.model';
 import { RootComponent } from 'src/app/root/root.component';
 import { NgStyle } from '@angular/common';
 
@@ -47,6 +47,20 @@ export class YtdlListComponent implements OnInit, OnDestroy {
 
   loadList() {
     this.service.getJobList().subscribe(jobs => this.jobs = jobs)
+  }
+
+  deleteJob(job: JobBase) {
+    this.service.deleteJob(job.id).subscribe(
+      x => this.loadList(),
+      e => this.root.addErrorAlert(e, this)
+    )
+  }
+
+  retryJob(job: JobBase) {
+    this.service.retryJob(job.id).subscribe(
+      x => this.loadList(),
+      e => this.root.addErrorAlert(e, this)
+    )
   }
 
   getClassForStatus(status: string) {
