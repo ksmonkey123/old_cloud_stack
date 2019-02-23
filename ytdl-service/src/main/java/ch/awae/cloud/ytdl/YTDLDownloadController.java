@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ch.awae.cloud.exception.ResourceNotFoundException;
 import ch.awae.cloud.ytdl.services.FileStorageService;
+import ch.awae.utils.functional.T2;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -27,14 +28,14 @@ public class YTDLDownloadController {
 	@GetMapping("/download/{uuid}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable("uuid") String uuid, HttpServletRequest request)
 			throws UnsupportedEncodingException {
-		Resource file = service.getFileByUUID(uuid);
+		T2<Resource, Long> file = service.getFileByUUID(uuid);
 		if (file == null)
-			throw new ResourceNotFoundException("file", "uuid", file);
+			throw new ResourceNotFoundException("file", "uuid", uuid);
 
 		// Try to determine MIME-type
 		String contentType = null;
 		try {
-			contentType = request.getServletContext().getMimeType(file.getFile().getAbsolutePath());
+			contentType = request.getServletContext().getMimeType(file._1.getFile().getAbsolutePath());
 		} catch (IOException e) {
 		}
 		if (contentType == null)
@@ -42,8 +43,9 @@ public class YTDLDownloadController {
 
 		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
 				.header(HttpHeaders.CONTENT_DISPOSITION,
-						"attachment; filename=\"" + URLDecoder.decode(file.getFilename(), "UTF-8") + "\"")
-				.body(file);
+						"attachment; filename=\"" + URLDecoder.decode(file._1.getFilename(), "UTF-8") + "\"")
+				.header(HttpHeaders.CONTENT_LENGTH, file._2.toString())
+				.body(file._1);
 	}
 
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import ch.awae.cloud.exception.ResourceNotFoundException;
 import ch.awae.cloud.ytdl.model.OutputFile;
 import ch.awae.cloud.ytdl.repository.FileRepository;
+import ch.awae.utils.functional.T2;
 
 @Service
 public class FileStorageService {
@@ -23,13 +24,13 @@ public class FileStorageService {
 	private @Autowired FileRepository repo;
 	private @Autowired ExecService exec;
 
-	public Resource getFileByUUID(String uuid) {
+	public T2<Resource, Long> getFileByUUID(String uuid) {
 		OutputFile file = repo.findByUuid(uuid).orElseThrow(() -> new ResourceNotFoundException("file", "uuid", uuid));
 		try {
 			Path filePath = Paths.get(outFile + "/" + file.getIdentifier() + "/" + file.getName());
 			Resource resource = new UrlResource(filePath.toUri());
 			if (resource.exists())
-				return resource;
+				return T2.of(resource, file.getSize());
 			else
 				throw new ResourceNotFoundException("file", "uuid", uuid);
 		} catch (Exception e) {
