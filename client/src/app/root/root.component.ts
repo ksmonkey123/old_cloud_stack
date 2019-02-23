@@ -19,7 +19,7 @@ export class RootComponent implements OnInit {
 
   links: Link[] = [
     new Link("Shortener", "/shorten", "ROLE_SHORTEN", "a simple URL-shortener implementation"),
-    new Link("E:D Router", "/elite-router", "ROLE_ELITE", "an exhaustive pathfinder for Elite:Dangerous"),
+    new Link("E:D Router", "/elite-route", "ROLE_ELITE", "an exhaustive pathfinder for Elite:Dangerous"),
     new Link("Netcode", "/netcode", "ROLE_NETCODE", "app registry for the my.awae.ch netcode server"),
     new Link("Youtube-Download", "/ytdl/list", "ROLE_YTDL", "a youtube video downloader and transcoder")
   ];
