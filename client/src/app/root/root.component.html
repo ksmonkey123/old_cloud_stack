@@ -27,6 +27,20 @@
   <p *ngFor="let alert of alerts">
     <ngb-alert [type]="alert.type" (close)="closeAlert(alert)">{{ alert.message }}</ngb-alert>
   </p>
+  <ng-template #dangerModal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{dangerModalData.action}}?</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      This action cannot be reverted!
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" (click)="modal.close('Delete click')">{{dangerModalData.action}}</button>
+    </div>
+  </ng-template>
   <div>
     <router-outlet></router-outlet>
   </div>

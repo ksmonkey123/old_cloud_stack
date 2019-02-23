@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { UserService } from '../user/user.service';
 import { User } from '../model/user';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Alert } from './alert';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +17,7 @@ export class RootComponent implements OnInit {
 
   isCollapsed = true;
 
-  links :Link[] = [
+  links: Link[] = [
     new Link("Shortener", "/shorten", "ROLE_SHORTEN", "a simple URL-shortener implementation"),
     new Link("E:D Router", "/elite-router", "ROLE_ELITE", "an exhaustive pathfinder for Elite:Dangerous"),
     new Link("Netcode", "/netcode", "ROLE_NETCODE", "app registry for the my.awae.ch netcode server"),
@@ -28,10 +30,15 @@ export class RootComponent implements OnInit {
   username: string;
   alerts: Alert[] = [];
 
+  @ViewChild('dangerModal') private dangerModal: any;
+
+  dangerModalData : DangerModalData;
+
 
   constructor(
     private userService: UserService,
     private authService: AuthService,
+    private modalService: NgbModal,
     private router: Router) { }
 
   ngOnInit() {
@@ -100,6 +107,13 @@ export class RootComponent implements OnInit {
 
   }
 
+  openDangerModal(model : DangerModalData, onClose?: () => any) {
+    this.dangerModalData = model;
+    this.modalService.open(this.dangerModal).result.then(
+      (good) => onClose(),
+      (baad) => {});
+  }
+
 }
 
 export class Link {
@@ -109,6 +123,12 @@ export class Link {
     public route: string,
     public role: string,
     public desc: string
-  ) {}
+  ) { }
 
+}
+
+export class DangerModalData {
+  constructor(
+    public action: string,
+  ){}
 }

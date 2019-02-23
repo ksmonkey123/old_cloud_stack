@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { YtdlService } from '../ytdl.service';
 import { JobDetails, JobBase } from '../ytdl.model';
-import { RootComponent } from 'src/app/root/root.component';
+import { RootComponent, DangerModalData } from 'src/app/root/root.component';
 
 @Component({
   selector: 'app-ytdl-details',
@@ -85,10 +85,11 @@ export class YtdlDetailsComponent implements OnInit, OnDestroy {
   }
 
   deleteJob(job: JobBase) {
-    this.service.deleteJob(job.id).subscribe(
-      x => this.loadData(),
-      e => this.root.addErrorAlert(e, this)
-    )
+    this.root.openDangerModal(new DangerModalData('Delete Job #' + job.id), () =>
+      this.service.deleteJob(job.id).subscribe(
+        x => this.loadData(),
+        e => this.root.addErrorAlert(e, this)
+      ));
   }
 
   retryJob(job: JobBase) {

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NetcodeApp } from './netcodeApp';
 import { NetcodeService } from './netcode.service';
-import { RootComponent } from '../root/root.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { RootComponent, DangerModalData } from '../root/root.component';
 
 @Component({
   selector: 'app-netcode',
@@ -16,8 +15,7 @@ export class NetcodeComponent implements OnInit {
 
   constructor(
     private service: NetcodeService,
-    private root: RootComponent,
-    private modalService: NgbModal
+    private root: RootComponent
   ) { }
 
   ngOnInit() {
@@ -35,11 +33,9 @@ export class NetcodeComponent implements OnInit {
       (error) => this.root.addErrorAlert(error, this));
   }
 
-  open(content: any, id: string) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      this.doDelete(id);
-    }, (reason) => {
-    });
+  delete(app: NetcodeApp) {
+    this.root.openDangerModal(new DangerModalData("Delete '" + app.name + "'"), () =>
+      this.doDelete(app.identifier));
   }
 
   doDelete(id: string) {

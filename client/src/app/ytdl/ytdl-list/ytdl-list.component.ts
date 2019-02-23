@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { YtdlService } from '../ytdl.service';
 import { Format, FormatListEntry, JobSummary, JobBase } from '../ytdl.model';
-import { RootComponent } from 'src/app/root/root.component';
+import { RootComponent, DangerModalData } from 'src/app/root/root.component';
 import { NgStyle } from '@angular/common';
 
 @Component({
@@ -50,10 +50,11 @@ export class YtdlListComponent implements OnInit, OnDestroy {
   }
 
   deleteJob(job: JobBase) {
-    this.service.deleteJob(job.id).subscribe(
-      x => this.loadList(),
-      e => this.root.addErrorAlert(e, this)
-    )
+    this.root.openDangerModal(new DangerModalData('Delete Job #' + job.id), () =>
+      this.service.deleteJob(job.id).subscribe(
+        x => this.loadList(),
+        e => this.root.addErrorAlert(e, this)
+      ));
   }
 
   retryJob(job: JobBase) {

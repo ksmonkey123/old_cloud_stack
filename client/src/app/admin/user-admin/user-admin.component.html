@@ -19,21 +19,7 @@
     Delete User
   </div>
   <div class="card-body">
-    <ng-template #content let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Delete User</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        This action cannot be reverted!
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="modal.close('Delete click')">Delete User</button>
-      </div>
-    </ng-template>
-    <button class="btn btn-danger" (click)="open(content)">Delete</button>
+    <button class="btn btn-danger" (click)="deleteUser()">Delete</button>
   </div>
 </div>
 

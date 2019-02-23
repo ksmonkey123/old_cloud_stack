@@ -5,9 +5,8 @@ import { switchMap } from 'rxjs/operators';
 import { User } from 'src/app/model/user';
 import { AdminService } from '../admin.service';
 import { UserService } from 'src/app/user/user.service';
-import { RootComponent } from 'src/app/root/root.component';
+import { RootComponent, DangerModalData } from 'src/app/root/root.component';
 import { AdminComponent } from '../admin.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-user-admin',
@@ -26,7 +25,6 @@ export class UserAdminComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private root: RootComponent,
-    private modalService: NgbModal,
     private parent: AdminComponent
   ) { }
 
@@ -62,11 +60,9 @@ export class UserAdminComponent implements OnInit {
       )
   }
 
-  open(content: any) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      this.doDelete();
-    }, (reason) => {
-    });
+  deleteUser() {
+    this.root.openDangerModal(new DangerModalData("Delete User"), () =>
+      this.doDelete());
   }
 
   doDelete() {
