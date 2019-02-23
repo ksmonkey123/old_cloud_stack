@@ -4,20 +4,20 @@
     <h2>Job #{{job.id}}: {{job.status.toLowerCase()}}</h2>
   </div>
   <div class="card-body card-text">
-    
+
     <h3>URL</h3>
     <ul>
-      <li><a [attr.href]="job.url" target="_blank">{{job.url}}<span
-        *ngIf="job.name != null"> ({{job.name}})</span></a></li>
+      <li><a [attr.href]="job.url" target="_blank">{{job.url}}</a><span *ngIf="job.name != null">&nbsp;({{job.name}})</span>
+      </li>
     </ul>
     <span *ngIf="job.files.length != 0">
       <h3>Files</h3>
       <ul>
         <li *ngFor="let file of job.files">
-            <span class="badge badge-secondary">{{file.format.name}}</span>&nbsp;
-            <a [attr.href]="'/api/ytdl/download/'+file.uuid" target="_blank">
-              {{file.name}} ({{prettyFileSize(file.size)}})</a>
-          </li>
+          <span class="badge badge-secondary">{{file.format.name}}</span>&nbsp;
+          <a [attr.href]="'/api/ytdl/download/'+file.uuid" target="_blank">
+            {{file.name}} ({{prettyFileSize(file.size)}})</a>
+        </li>
       </ul>
     </span>
     <span *ngIf="job.status == 'CONVERTING'">
