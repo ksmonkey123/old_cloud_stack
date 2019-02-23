@@ -1,6 +1,8 @@
 package ch.awae.cloud.ytdl;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,7 +25,8 @@ public class YTDLDownloadController {
 	private FileStorageService service;
 
 	@GetMapping("/download/{uuid}")
-	public ResponseEntity<Resource> downloadFile(@PathVariable("uuid") String uuid, HttpServletRequest request) {
+	public ResponseEntity<Resource> downloadFile(@PathVariable("uuid") String uuid, HttpServletRequest request)
+			throws UnsupportedEncodingException {
 		Resource file = service.getFileByUUID(uuid);
 		if (file == null)
 			throw new ResourceNotFoundException("file", "uuid", file);
@@ -37,9 +40,9 @@ public class YTDLDownloadController {
 		if (contentType == null)
 			contentType = "application/octet-stream";
 
-		return ResponseEntity.ok()
-				.contentType(MediaType.parseMediaType(contentType))
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION,
+						"attachment; filename=\"" + URLDecoder.decode(file.getFilename(), "UTF-8") + "\"")
 				.body(file);
 	}
 
