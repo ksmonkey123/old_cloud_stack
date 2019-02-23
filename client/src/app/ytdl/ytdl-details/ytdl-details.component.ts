@@ -66,10 +66,20 @@ export class YtdlDetailsComponent implements OnInit, OnDestroy {
       case 'FAILED':
         return { width: '100%' };
       case 'CONVERTING':
-        return { width: (100 * (job.files.length + 1) / (job.formats.length + 1)).toFixed(0) + '%' }
+        return { width: (100 * (job.files.length + 2) / (job.formats.length + 1)).toFixed(0) + '%' }
       case 'DOWNLOADING':
         return { width: (100 / (job.formats.length + 1)).toFixed(0) + '%' }
     }
+  }
+
+  prettyFileSize(size: number): string {
+    if (size < 1000)
+      return size + " B";
+    if (size < 1000000)
+      return (size / 1000).toPrecision(3) + " kB";
+    if (size < 1000000000)
+      return (size / 1000000).toPrecision(3) + " MB";
+    return (size / 1000000000).toPrecision(3) + " GB";
   }
 
 }

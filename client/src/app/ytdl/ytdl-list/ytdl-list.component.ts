@@ -77,7 +77,7 @@ export class YtdlListComponent implements OnInit, OnDestroy {
       case 'FAILED':
         return { width: '100%' };
       case 'CONVERTING':
-        return { width: (100 * (job.files + 1) / (job.formats + 1)).toFixed(0) + '%' }
+        return { width: (100 * (job.files + 2) / (job.formats + 1)).toFixed(0) + '%' }
       case 'DOWNLOADING':
         return { width: (100 / (job.formats + 1)).toFixed(0) + '%' }
     }

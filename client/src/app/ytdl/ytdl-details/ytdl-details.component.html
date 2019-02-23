@@ -6,16 +6,22 @@
   <div class="card-body card-text">
     <h3>URL</h3>
     <ul>
-      <li>{{job.url}}</li>
+      <li><a [attr.href]="job.url" target="_blank">{{job.url}}</a></li>
     </ul>
-    <h3>Files</h3>
-    <ul>
-      <li *ngFor="let file of job.files">{{file.path}}</li>
-    </ul>
+    <span *ngIf="job.files.length != 0">
+      <h3>Files</h3>
+      <ul>
+        <li *ngFor="let file of job.files">
+            <span class="badge badge-secondary">{{file.format.name}}</span>&nbsp;
+            <a [attr.href]="'/api/ytdl/download/'+file.uuid" target="_blank">
+              {{file.name}} ({{prettyFileSize(file.size)}})</a>
+          </li>
+      </ul>
+    </span>
     <span *ngIf="job.status == 'CONVERTING'">
       <h3>Progress</h3>
       <ul>
-        <li>converting into format {{job.files + 1}} / {{job.formats}}</li>
+        <li>converting into format {{job.files.length + 1}} / {{job.formats.length}}</li>
       </ul>
     </span>
 
