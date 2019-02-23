@@ -27,7 +27,7 @@ public class DownloadService {
 	public Optional<String> downloadFile(String url, String identifier) throws IOException, InterruptedException {
 		File f = new File(tempFile + "/" + identifier + "/");
 		f.mkdirs();
-		exec.execInDirectory(f, binPath, url);
+		exec.execInDirectory(f, binPath, "--no-playlist", url);
 		try (Stream<Path> paths = Files.walk(Paths.get(tempFile + "/" + identifier))) {
 			return paths.filter(Files::isRegularFile).findFirst().map(Path::getFileName).map(Object::toString);
 		}
