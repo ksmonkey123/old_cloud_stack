@@ -47,6 +47,8 @@ public class User {
 			this.roles = roles;
 		else
 			this.roles = new ArrayList<>();
+		if (!this.roles.contains("ROLE_USER"))
+			this.roles.add("ROLE_USER");
 	}
 	
 	public void patchRoles(Function<List<String>, List<String>> f) {
