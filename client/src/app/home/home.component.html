@@ -1,37 +1,10 @@
-<h1>Welcome {{ user.username }}!</h1>
-<!--
 <div class="d-flex flex-wrap">
-    <div class="card border-primary" style="width: 18rem;">
-        <div class="card-header text-white bg-primary">
-            Test
+    <div *ngFor="let link of root.links" class="card border-primary" style="width: 18rem;">
+        <div class="card-header bg-primary">
+            <a [routerLink]="[link.route]" class="text-white">{{link.text}}</a>
         </div>
         <div class="card-body">
-            <p class="card-text">text</p>
-        </div>
-    </div>
-    <div class="card border-primary" style="width: 18rem;">
-        <div class="card-header text-white bg-primary">
-            Test
-        </div>
-        <div class="card-body">
-            <p class="card-text">text</p>
-        </div>
-    </div>
-    <div class="card border-primary" style="width: 18rem;">
-        <div class="card-header text-white bg-primary">
-            Test
-        </div>
-        <div class="card-body">
-            <p class="card-text">text</p>
-        </div>
-    </div>
-    <div class="card border-primary" style="width: 18rem;">
-        <div class="card-header text-white bg-primary">
-            Test
-        </div>
-        <div class="card-body">
-            <p class="card-text">text</p>
+            <p class="card-text text-black">{{link.desc}}</p>
         </div>
     </div>
 </div>
--->

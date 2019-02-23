@@ -15,11 +15,11 @@ export class RootComponent implements OnInit {
 
   isCollapsed = true;
 
-  links = [
-    { text: "Shortener", route: "/shorten", role: "ROLE_SHORTEN" },
-    { text: "E:D Router", route: "/elite-route", role: "ROLE_ELITE" },
-    { text: "Netcode", route: "/netcode", role: "ROLE_NETCODE" },
-    { text: "Youtube-Download", route: "/ytdl/list", role: "ROLE_YTDL" },
+  links :Link[] = [
+    new Link("Shortener", "/shorten", "ROLE_SHORTEN", "a simple URL-shortener implementation"),
+    new Link("E:D Router", "/elite-router", "ROLE_ELITE", "an exhaustive pathfinder for Elite:Dangerous"),
+    new Link("Netcode", "/netcode", "ROLE_NETCODE", "app registry for the my.awae.ch netcode server"),
+    new Link("Youtube-Download", "/ytdl/list", "ROLE_YTDL", "a youtube video downloader and transcoder")
   ];
 
   user: User;
@@ -99,5 +99,16 @@ export class RootComponent implements OnInit {
     this.addAlert({ type: 'danger', message: message, parent: parent });
 
   }
+
+}
+
+export class Link {
+
+  constructor(
+    public text: string,
+    public route: string,
+    public role: string,
+    public desc: string
+  ) {}
 
 }
