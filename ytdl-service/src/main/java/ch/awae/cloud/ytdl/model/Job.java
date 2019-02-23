@@ -47,6 +47,8 @@ public class Job {
 	private Timestamp created;
 
 	private String url;
+	
+	private String name;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)

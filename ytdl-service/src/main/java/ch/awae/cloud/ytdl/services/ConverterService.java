@@ -17,14 +17,16 @@ import ch.awae.utils.functional.T2;
 @Service
 public class ConverterService {
 
-	private String outFile;
 	private String binPath;
+	private String outFile;
+	private String tempFile;
 	private ExecService exec;
 
-	public ConverterService(ExecService exec, @Value("${ytdl.filesystem.out}") String outFile,
-			@Value("${ytdl.ffmpeg}") String binPath) {
+	public ConverterService(ExecService exec, @Value("${ytdl.filesystem.temp}") String tempFile,
+			@Value("${ytdl.filesystem.out}") String outFile, @Value("${ytdl.ffmpeg}") String binPath) {
 		this.outFile = outFile;
 		this.binPath = binPath;
+		this.tempFile = tempFile;
 		this.exec = exec;
 	}
 
@@ -45,7 +47,7 @@ public class ConverterService {
 	}
 
 	private void runCP(String file, String identifier) throws InterruptedException, IOException {
-		exec.exec("cp", file, outFile + "/" + identifier + "/");
+		exec.exec("cp", tempFile + "/" + identifier + "/" + file, outFile + "/" + identifier + "/");
 	}
 
 	private void runFFMPEG(String file, String identifier, ExportFormat format)
@@ -53,7 +55,8 @@ public class ConverterService {
 		System.out.println("ffmpeg");
 		String[] fileParts = file.split("/");
 		String filename = fileParts[fileParts.length - 1];
-		exec.exec(binPath, "-y", "-i", file, outFile + "/" + identifier + "/" + filename + format.getSuffix());
+		exec.exec(binPath, "-y", "-i", tempFile + "/" + identifier + "/" + file,
+				outFile + "/" + identifier + "/" + filename + format.getSuffix());
 	}
 
 }

@@ -29,7 +29,7 @@ public class DownloadService {
 		f.mkdirs();
 		exec.execInDirectory(f, binPath, url);
 		try (Stream<Path> paths = Files.walk(Paths.get(tempFile + "/" + identifier))) {
-			return paths.filter(Files::isRegularFile).findFirst().map(Object::toString);
+			return paths.filter(Files::isRegularFile).findFirst().map(Path::getFileName).map(Object::toString);
 		}
 	}
 

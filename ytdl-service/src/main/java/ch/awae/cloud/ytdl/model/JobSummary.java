@@ -33,9 +33,11 @@ public class JobSummary {
 	private Timestamp created;
 
 	private String url;
+	
+	private String name;
 
 	private int formats;
-
+	
 	private int files;
 
 	@Column(name = "format_list")

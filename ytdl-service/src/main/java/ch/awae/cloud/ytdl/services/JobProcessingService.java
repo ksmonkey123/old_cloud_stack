@@ -44,6 +44,7 @@ public class JobProcessingService {
 			System.out.println("starting download");
 			String tempFile = downloadService.downloadFile(job.getUrl(), identifier).get();
 			job.setStatus(JobStatus.CONVERTING);
+			job.setName(tempFile);
 			job = repository.save(job);
 			for (ExportFormat format : formats) {
 				System.out.println("starting conversion to " + format.getName());
