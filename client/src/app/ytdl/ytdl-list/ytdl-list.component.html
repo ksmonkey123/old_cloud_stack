@@ -22,13 +22,7 @@
         <div class="card-header text-white" [ngClass]="'bg-'+getClassForStatus(job.status)">
             <a [routerLink]="['/ytdl/job', job.id]" class='text-white'>Job #{{job.id}}: {{job.status}}</a></div>
         <div class="card-body" [ngClass]="'text-'+getClassForStatus(job.status)">
-            <p class="card-text">{{job.url}} ({{job.formatList}})
-                <span *ngIf="job.status == 'CONVERTING'">
-                    <br/><br/>
-                    converting into format {{job.files + 1}} / {{job.formats}}
-                </span>
-            </p>
-
+            <p class="card-text">{{job.url}} ({{job.formatList}})</p>
             <div class="progress">
                 <div class="progress-bar" [ngClass]="getProgressBarClass(job)" [ngStyle]="getProgressBarStyle(job)">
                 </div>
