@@ -41,7 +41,6 @@ export class YtdlListComponent implements OnInit, OnDestroy {
   }
 
   postAdd() {
-    this.root.addSuccessAlert('job added to queue', this);
     this.model = new AddJobFormModel();
     this.loadList();
   }
