@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { YtdlService } from '../ytdl.service';
-import { JobDetails } from '../ytdl.model';
+import { JobDetails, JobBase } from '../ytdl.model';
+import { RootComponent } from 'src/app/root/root.component';
 
 @Component({
   selector: 'app-ytdl-details',
@@ -18,6 +19,7 @@ export class YtdlDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private root: RootComponent,
     private service: YtdlService
   ) { }
 
@@ -80,6 +82,20 @@ export class YtdlDetailsComponent implements OnInit, OnDestroy {
     if (size < 1000000000)
       return (size / 1000000).toPrecision(3) + " MB";
     return (size / 1000000000).toPrecision(3) + " GB";
+  }
+
+  deleteJob(job: JobBase) {
+    this.service.deleteJob(job.id).subscribe(
+      x => this.loadData(),
+      e => this.root.addErrorAlert(e, this)
+    )
+  }
+
+  retryJob(job: JobBase) {
+    this.service.retryJob(job.id).subscribe(
+      x => this.loadData(),
+      e => this.root.addErrorAlert(e, this)
+    )
   }
 
 }

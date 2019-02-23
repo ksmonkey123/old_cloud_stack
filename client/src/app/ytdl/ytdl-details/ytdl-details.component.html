@@ -4,11 +4,15 @@
     <h2>Job #{{job.id}}: {{job.status.toLowerCase()}}</h2>
   </div>
   <div class="card-body card-text">
-
+    <span class="float-right">
+      <button *ngIf="job.status == 'FAILED'" class="btn btn-primary btn-retry" (click)="retryJob(job)">Retry</button>
+      <button *ngIf="job.status != 'CONVERTING' && job.status != 'DOWNLOADING'" class="btn btn-danger"
+        (click)="deleteJob(job)">Delete</button>
+    </span>
     <h3>URL</h3>
     <ul>
-      <li><a [attr.href]="job.url" target="_blank">{{job.url}}</a><span
-          *ngIf="job.name != null">&nbsp;- {{job.name}}</span>
+      <li><a [attr.href]="job.url" target="_blank">{{job.url}}</a><span *ngIf="job.name != null">&nbsp;-
+          {{job.name}}</span>
       </li>
     </ul>
     <span *ngIf="job.files.length != 0">

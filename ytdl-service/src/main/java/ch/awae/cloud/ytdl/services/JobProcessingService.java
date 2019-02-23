@@ -1,6 +1,7 @@
 package ch.awae.cloud.ytdl.services;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -24,11 +25,20 @@ public class JobProcessingService {
 	private DownloadService downloadService;
 	private ConverterService converterService;
 	private JobRepository repository;
+	private JobService jobService;
 
 	@Scheduled(fixedRateString = "${ytdl.processor.interval}")
 	public void run() {
 		cleanupBrokenJobs();
+		deleteOldJobs();
 		performOneJob();
+	}
+
+	private void deleteOldJobs() {
+		List<Job> oldJobs = repository
+				.findByCreatedBefore(new Timestamp(System.currentTimeMillis() - (24 * 60 * 60 * 1000)));
+		for (Job job : oldJobs)
+			jobService.deleteJob(job.getId(), user -> true);
 	}
 
 	private void performOneJob() {
