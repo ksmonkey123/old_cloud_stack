@@ -20,7 +20,8 @@
     <!-- PENDING CARD -->
     <div class="card" [ngClass]="'border-'+getClassForStatus(job.status)">
         <div class="card-header text-white" [ngClass]="'bg-'+getClassForStatus(job.status)">
-            <a [routerLink]="['/ytdl/job', job.id]" class='text-white'>Job #{{job.id}}: {{job.status}}</a></div>
+            <a [routerLink]="['/ytdl/job', job.id]" class='text-white'>Job #{{job.id}}: {{job.status.toLowerCase()}}</a> <span
+            *ngIf="job.name != null">({{job.name}})</span></div>
         <div class="card-body" [ngClass]="'text-'+getClassForStatus(job.status)">
             <p class="card-text">{{job.url}} ({{job.formatList}})</p>
             <div class="progress">

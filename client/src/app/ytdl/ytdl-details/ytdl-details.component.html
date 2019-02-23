@@ -1,12 +1,14 @@
 <hr />
 <div class="card" [ngClass]="'border-'+getClassForStatus(job.status)">
   <div class="card-header text-white" [ngClass]="'bg-'+getClassForStatus(job.status)">
-    <h2>Job #{{job.id}}: {{job.status}}</h2>
+    <h2>Job #{{job.id}}: {{job.status.toLowerCase()}}</h2>
   </div>
   <div class="card-body card-text">
+    
     <h3>URL</h3>
     <ul>
-      <li><a [attr.href]="job.url" target="_blank">{{job.url}}</a></li>
+      <li><a [attr.href]="job.url" target="_blank">{{job.url}}<span
+        *ngIf="job.name != null"> ({{job.name}})</span></a></li>
     </ul>
     <span *ngIf="job.files.length != 0">
       <h3>Files</h3>

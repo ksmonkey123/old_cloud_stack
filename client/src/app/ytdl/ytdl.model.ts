@@ -12,6 +12,7 @@ export interface JobSummary {
     formats: number;
     files: number;
     formatList: string;
+    name: string;
 }
 
 export interface FormatListEntry {
@@ -32,4 +33,5 @@ export interface JobDetails {
     url: string;
     formats: Format[];
     files: OutputFile[];
+    name: string;
 }
